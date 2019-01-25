@@ -1,0 +1,19 @@
+BACKLOG
+Jacob,Peter,Hanwen
+
+Todo:
+4,Generate the default views with MVC.
+5,Check in function.
+6,Check out function.
+7,Modify the view of car.
+8,Input control.
+9,dropdown list of car type.
+10,search function.
+11,receipt function.
+
+Doing:
+3,Create the model class of CAR: Peter
+
+Done:
+1,Setup the project of Garage2.0: Jacob
+2,Create master on Git: Jacob
