@@ -2,7 +2,10 @@
 {
     public enum VehicleType
     {
-        Unknown,
-        Type1
+        Bus,
+        Car,
+        Motorcycle,
+        RV,
+        Truck
     }
 }
