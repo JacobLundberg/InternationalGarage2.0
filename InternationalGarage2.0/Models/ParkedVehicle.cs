@@ -18,6 +18,8 @@ namespace InternationalGarage2_0.Models
         public int Id { get; set; }
 
         public VehicleType Type { get; set; }
+
+        [RegularExpression(@"^[A-Z]{3}\d{3}$")]
         public string LicenseNumber { get; set; }
         public string Color { get; set; }
         public string Model { get; set; }
