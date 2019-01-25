@@ -1,6 +1,6 @@
 using System;
 
-namespace InternationalGarage2._0.Models
+namespace InternationalGarage2_0.Models
 {
     public class ErrorViewModel
     {
