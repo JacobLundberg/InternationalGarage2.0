@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace InternationalGarage2._0
+namespace InternationalGarage2_0
 {
     public class Startup
     {

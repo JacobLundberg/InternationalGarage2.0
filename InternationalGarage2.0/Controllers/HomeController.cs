@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using InternationalGarage2._0.Models;
+using InternationalGarage2_0.Models;
 
-namespace InternationalGarage2._0.Controllers
+namespace InternationalGarage2_0.Controllers
 {
     public class HomeController : Controller
     {
