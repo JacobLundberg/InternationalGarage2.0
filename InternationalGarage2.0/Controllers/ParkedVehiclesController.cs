@@ -74,11 +74,11 @@ namespace InternationalGarage2_0.Controllers
                 new ParkedVehicle()
                 {
                     Type = VehicleType.Motorcycle,
-                    LicenseNumber = "MOT554",
-                    Color = "Black",
-                    Model = "Yamaha",
+                    LicenseNumber = "TOM554",
+                    Color = "Silver",
+                    Model = "Honda",
                     NumberOfWheels = 2,
-                    TimeStampCheckIn = new DateTime(2019, 01, 26, 12, 44, 07),
+                    TimeStampCheckIn = new DateTime(2019, 01, 20, 12, 22, 07),
                     TimeStampCheckOut = null
                 });
             _context.ParkedVehicle.Add(
@@ -96,7 +96,7 @@ namespace InternationalGarage2_0.Controllers
                 new ParkedVehicle()
                 {
                     Type = VehicleType.RV,
-                    LicenseNumber = "MOT554",
+                    LicenseNumber = "DDS154",
                     Color = "Cream White",
                     Model = "Hymer",
                     NumberOfWheels = 6,
