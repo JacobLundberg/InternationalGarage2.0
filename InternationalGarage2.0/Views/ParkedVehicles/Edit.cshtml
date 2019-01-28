@@ -1,4 +1,4 @@
-﻿@model InternationalGarage2_0.Models.ParkedVehicle
+﻿@model InternationalGarage2_0.Models.EditViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,7 +6,15 @@
 
 <h1>Edit</h1>
 
-<h4>ParkedVehicle</h4>
+<h4>Parked Vehicle</h4>
+
+@if (Model.ShowErrorMessage)
+{
+    <div class="alert alert-warning">
+        <strong>Error:</strong>@Model.ErrorMessage
+    </div>
+}
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,9 +22,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <select asp-for="Type" class="form-control"></select>
-                <span asp-validation-for="Type" class="text-danger"></span>
+                <select asp-for="Type" asp-items="Model.Types"></select>
             </div>
             <div class="form-group">
                 <label asp-for="LicenseNumber" class="control-label"></label>
@@ -37,16 +43,6 @@
                 <label asp-for="NumberOfWheels" class="control-label"></label>
                 <input asp-for="NumberOfWheels" class="form-control" />
                 <span asp-validation-for="NumberOfWheels" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TimeStampCheckIn" class="control-label"></label>
-                <input asp-for="TimeStampCheckIn" class="form-control" />
-                <span asp-validation-for="TimeStampCheckIn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TimeStampCheckOut" class="control-label"></label>
-                <input asp-for="TimeStampCheckOut" class="form-control" />
-                <span asp-validation-for="TimeStampCheckOut" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
