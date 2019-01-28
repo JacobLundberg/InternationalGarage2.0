@@ -313,5 +313,21 @@ namespace InternationalGarage2_0.Controllers
             }
             return false;
         }
+
+        public IActionResult Receipt(ParkedVehicle vehout)
+        {
+            Receipt prReceipt = new Receipt
+            {
+                LicenseNumber = vehout.LicenseNumber,
+                Type = vehout.Type.ToString(),
+                Color = vehout.Color,
+                Model = vehout.Model,
+                NumberOfWheels = vehout.NumberOfWheels,
+                TimeStampCheckIn = vehout.TimeStampCheckIn,
+                TimeStampCheckOut = (DateTime)vehout.TimeStampCheckOut,
+                Cash = (vehout.TimeStampCheckOut - vehout.TimeStampCheckIn).Value.Minutes 
+            };
+            return View(prReceipt);
+        }
     }
 }
