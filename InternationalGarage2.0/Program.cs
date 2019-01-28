@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace InternationalGarage2._0
+namespace InternationalGarage2_0
 {
     public class Program
     {
