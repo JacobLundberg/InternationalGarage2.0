@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>InternationalGarage2._0</RootNamespace>
+    <RootNamespace>InternationalGarage2_0</RootNamespace>
   </PropertyGroup>
 
 

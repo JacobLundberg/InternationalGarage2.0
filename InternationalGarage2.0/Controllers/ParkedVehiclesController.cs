@@ -243,9 +243,74 @@ namespace InternationalGarage2_0.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: ParkedVehicles/Check In
+        public IActionResult CheckIn()
+        {
+            var res = new CheckInViewModel() { Types = GetTypes() };
+            return View(res);
+        }
+
+        // POST: ParkedVehicles/CheckIn
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckIn([Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels")] CheckInViewModel vehicle)
+        {
+            if (ModelState.IsValid)
+            {
+                var parkedVehicle = new ParkedVehicle
+                {
+                    Id = vehicle.Id,
+                    Color = vehicle.Color,
+                    LicenseNumber = vehicle.LicenseNumber,
+                    Model = vehicle.Model,
+                    Type = vehicle.Type,
+                    NumberOfWheels = vehicle.NumberOfWheels,
+                    TimeStampCheckIn = DateTime.Now
+                };
+
+                if (IsLicenceNumberCheckedIn(vehicle.LicenseNumber))
+                {
+                    vehicle.Types = GetTypes();
+                    vehicle.ErrorMessage = $"Vehicle with License {vehicle.LicenseNumber} already parked";
+                    return View(vehicle);
+                }
+
+                _context.Add(parkedVehicle);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(vehicle);
+        }
+
         private bool ParkedVehicleExists(int id)
         {
             return _context.ParkedVehicle.Any(e => e.Id == id);
+        }
+
+        private List<SelectListItem> GetTypes()
+        {
+            var res = new List<SelectListItem>();
+            var values = Enum.GetValues(typeof(VehicleType));
+            foreach (var item in values)
+            {
+                var text = item.ToString();
+                res.Add(new SelectListItem(text, text));
+            }
+            return res;
+        }
+
+        private bool IsLicenceNumberCheckedIn(string licenseNumber)
+        {
+            var parkedVehicle = _context.ParkedVehicle
+                .FirstOrDefault(m => m.LicenseNumber == licenseNumber);
+            if (parkedVehicle != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
