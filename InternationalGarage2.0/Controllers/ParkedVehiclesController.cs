@@ -238,7 +238,8 @@ namespace InternationalGarage2_0.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
-            _context.ParkedVehicle.Remove(parkedVehicle);
+            //_context.ParkedVehicle.Remove(parkedVehicle);
+            parkedVehicle.TimeStampCheckOut = DateTime.Now;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
