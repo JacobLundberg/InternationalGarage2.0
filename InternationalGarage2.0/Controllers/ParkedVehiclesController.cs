@@ -290,7 +290,7 @@ namespace InternationalGarage2_0.Controllers
             //_context.ParkedVehicle.Remove(parkedVehicle);
             parkedVehicle.TimeStampCheckOut = DateTime.Now;
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Receipt),parkedVehicle);
         }
 
         // GET: ParkedVehicles/Check In
@@ -361,6 +361,23 @@ namespace InternationalGarage2_0.Controllers
                 return true;
             }
             return false;
+        }
+
+        public IActionResult Receipt(ParkedVehicle vehout)
+        {
+            var timediff = (vehout.TimeStampCheckOut - vehout.TimeStampCheckIn).Value.TotalMinutes;
+            Receipt prReceipt = new Receipt
+            {
+                LicenseNumber = vehout.LicenseNumber,
+                Type = vehout.Type.ToString(),
+                Color = vehout.Color,
+                Model = vehout.Model,
+                NumberOfWheels = vehout.NumberOfWheels,
+                TimeStampCheckIn = vehout.TimeStampCheckIn,
+                TimeStampCheckOut = (DateTime)vehout.TimeStampCheckOut,
+                Cash = (int) timediff
+            };
+            return View(prReceipt);
         }
 
         private string GetLicenseAlreadyParkedErrorMsg(string licenseNumber)
