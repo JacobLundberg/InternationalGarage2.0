@@ -1,0 +1,58 @@
+﻿@model InternationalGarage2_0.Models.Receipt
+
+@{
+    ViewData["Title"] = "Receipt";
+}
+
+<h1>Receipt/Kvitto</h1>
+
+<div>
+    <h4>Receipt</h4>
+    <hr />
+    <table style="width:400px">
+        <tr>
+            <td>---</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="width:150px">Number Plat:</td>
+            <td style="width:250px"><h5>@Html.DisplayFor(model => Model.LicenseNumber)</h5></td>
+        </tr>
+        <tr>
+            <td style="width:150px">Type:</td>
+            <td style="width:250px">@Html.DisplayFor(model => Model.Type)</td>
+        </tr>
+        <tr>
+            <td style="width:150px">Color:</td>
+            <td style="width:250px">@Html.DisplayFor(model => Model.Color)</td>
+        </tr>
+        <tr>
+            <td style="width:150px">Modal:</td>
+            <td style="width:250px">@Html.DisplayFor(model => Model.Model)</td>
+        </tr>
+        <tr>
+            <td style="width:150px">Number of wheels:</td>
+            <td style="width:250px">@Html.DisplayFor(model => Model.NumberOfWheels)</td>
+        </tr>
+        <tr>
+            <td style="width:150px">Check in at:</td>
+            <td style="width:250px">@Html.DisplayFor(model => Model.TimeStampCheckIn)</td>
+        </tr>
+        <tr>
+            <td style="width:150px">Check out at:</td>
+            <td style="width:250px">@Html.DisplayFor(model => Model.TimeStampCheckOut)</td>
+        </tr>
+
+        <tr>
+            <td style="width:150px">Total to pay:</td>
+            <td style="width:250px"><h5>@Html.DisplayFor(model => Model.Cash) kr</h5></td>
+        </tr>
+        <tr>
+            <td>---</td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

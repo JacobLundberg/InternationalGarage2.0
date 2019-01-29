@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace InternationalGarage2_0.Models
 {
     public class Receipt
     {
+ 
         public string LicenseNumber;
         public string Type;
         public string Color;
@@ -14,6 +13,7 @@ namespace InternationalGarage2_0.Models
         public int NumberOfWheels;
         public DateTime TimeStampCheckIn;
         public DateTime TimeStampCheckOut;
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public int Cash;
     }
 }
