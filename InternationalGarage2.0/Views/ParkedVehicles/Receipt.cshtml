@@ -45,14 +45,15 @@
 
         <tr>
             <td style="width:150px">Total to pay:</td>
-            <td style="width:250px"><h5>@Html.DisplayFor(model => Model.Cash) kr</h5></td>
+            <td style="width:250px"><h5>@Html.DisplayFor(model => Model.Cash)</h5></td>
         </tr>
         <tr>
             <td>---</td>
             <td></td>
         </tr>
     </table>
+
 </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <input type="button" onclick="window.print()" value="Print"  class="btn btn-outline-info"/><a asp-action="Index">Back to List</a>
 </div>
