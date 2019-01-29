@@ -117,10 +117,25 @@ namespace InternationalGarage2_0.Controllers
             _context.SaveChanges();
         }
 
+        public async Task<IActionResult> SearchVehicleLicenseNumber(string licenseNumber)
+        {
+            licenseNumber = licenseNumber.ToUpper();
+            var parkedVehicle = await _context.ParkedVehicle
+                .FirstOrDefaultAsync(m => m.LicenseNumber == licenseNumber);
+            if (parkedVehicle == null)
+            {
+                var dummyVehicle = new ParkedVehicle { Id = -1, LicenseNumber = licenseNumber };  // Ugly solution for view to recognize the license was not found!
+                return View(dummyVehicle);
+            }
+            return View(parkedVehicle);
+        }
+
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ParkedVehicle.ToListAsync());
+            //Rewrite this func for checkout operations.
+            var context2 = from veh in _context.ParkedVehicle where veh.TimeStampCheckOut == null select veh;
+            return View(await context2.ToListAsync());
         }
 
         // GET: ParkedVehicles/Details/5
@@ -176,7 +191,18 @@ namespace InternationalGarage2_0.Controllers
             {
                 return NotFound();
             }
-            return View(parkedVehicle);
+
+            var model = new EditViewModel() {
+                Color = parkedVehicle.Color,
+                Id = parkedVehicle.Id,
+                LicenseNumber = parkedVehicle.LicenseNumber,
+                Model = parkedVehicle.Model,
+                NumberOfWheels = parkedVehicle.NumberOfWheels,
+                Type = parkedVehicle.Type,
+                Types = GetTypes()
+            };
+            
+            return View(model);
         }
 
         // POST: ParkedVehicles/Edit/5
@@ -184,7 +210,7 @@ namespace InternationalGarage2_0.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels,TimeStampCheckIn,TimeStampCheckOut")] ParkedVehicle parkedVehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels")] EditViewModel parkedVehicle)
         {
             if (id != parkedVehicle.Id)
             {
@@ -195,7 +221,30 @@ namespace InternationalGarage2_0.Controllers
             {
                 try
                 {
-                    _context.Update(parkedVehicle);
+                    parkedVehicle.Types = GetTypes();
+                    var vehicle = _context.ParkedVehicle.FirstOrDefault(a => a.Id == id);
+                    if(vehicle == null)
+                    {
+                        parkedVehicle.ErrorMessage = $"Could not find vehicle with id {id}";
+                        return View(parkedVehicle);
+                    }
+
+                    if(vehicle.LicenseNumber != parkedVehicle.LicenseNumber)
+                    {
+                        if(IsLicenceNumberCheckedIn(parkedVehicle.LicenseNumber))
+                        {
+                            parkedVehicle.ErrorMessage = GetLicenseAlreadyParkedErrorMsg(parkedVehicle.LicenseNumber);
+                            return View(parkedVehicle);
+                        }
+                    }
+
+                    vehicle.LicenseNumber = parkedVehicle.LicenseNumber;
+                    vehicle.Model = parkedVehicle.Model;
+                    vehicle.NumberOfWheels = parkedVehicle.NumberOfWheels;
+                    vehicle.Type = parkedVehicle.Type;
+                    vehicle.Color = parkedVehicle.Color;
+
+                    _context.Update(vehicle);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -241,7 +290,6 @@ namespace InternationalGarage2_0.Controllers
             //_context.ParkedVehicle.Remove(parkedVehicle);
             parkedVehicle.TimeStampCheckOut = DateTime.Now;
             await _context.SaveChangesAsync();
-            //return Receipt(parkedVehicle);
             return RedirectToAction(nameof(Receipt),parkedVehicle);
         }
 
@@ -275,7 +323,7 @@ namespace InternationalGarage2_0.Controllers
                 if (IsLicenceNumberCheckedIn(vehicle.LicenseNumber))
                 {
                     vehicle.Types = GetTypes();
-                    vehicle.ErrorMessage = $"Vehicle with License {vehicle.LicenseNumber} already parked";
+                    vehicle.ErrorMessage = GetLicenseAlreadyParkedErrorMsg(vehicle.LicenseNumber);
                     return View(vehicle);
                 }
 
@@ -331,5 +379,11 @@ namespace InternationalGarage2_0.Controllers
             };
             return View(prReceipt);
         }
+
+        private string GetLicenseAlreadyParkedErrorMsg(string licenseNumber)
+        {
+            return $"Vehicle with License {licenseNumber} already parked";
+        }
+
     }
 }
