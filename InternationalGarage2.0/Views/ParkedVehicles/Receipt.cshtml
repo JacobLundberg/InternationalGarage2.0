@@ -4,56 +4,63 @@
     ViewData["Title"] = "Receipt";
 }
 
-<h1>Receipt/Kvitto</h1>
-
+<div style=" border-left: 6px solid red;background-color: lightgrey;padding-left:5px;">International Garage AB.</div>
+<style>
+    .keys {
+        width:150px;
+        text-align:right;
+        padding-right:5px;
+    }
+    .values{
+        width:250px;
+        padding-left:3px;
+    }
+    .Dprint{
+        font-size:larger;
+        font-weight:bold;
+    }
+</style>
 <div>
+    <p>---</p>
     <h4>Receipt</h4>
     <hr />
     <table style="width:400px">
         <tr>
-            <td>---</td>
-            <td></td>
+            <td class="keys">Number Plat:</td>
+            <td class="values Dprint">@Html.DisplayFor(model => Model.LicenseNumber)</td>
         </tr>
         <tr>
-            <td style="width:150px">Number Plat:</td>
-            <td style="width:250px"><h5>@Html.DisplayFor(model => Model.LicenseNumber)</h5></td>
+            <td class="keys">Type:</td>
+            <td class="values">@Html.DisplayFor(model => Model.Type)</td>
         </tr>
         <tr>
-            <td style="width:150px">Type:</td>
-            <td style="width:250px">@Html.DisplayFor(model => Model.Type)</td>
+            <td class="keys">Color:</td>
+            <td class="values">@Html.DisplayFor(model => Model.Color)</td>
         </tr>
         <tr>
-            <td style="width:150px">Color:</td>
-            <td style="width:250px">@Html.DisplayFor(model => Model.Color)</td>
+            <td class="keys">Modal:</td>
+            <td class="values">@Html.DisplayFor(model => Model.Model)</td>
         </tr>
         <tr>
-            <td style="width:150px">Modal:</td>
-            <td style="width:250px">@Html.DisplayFor(model => Model.Model)</td>
+            <td class="keys">Number of wheels:</td>
+            <td class="values">@Html.DisplayFor(model => Model.NumberOfWheels)</td>
         </tr>
         <tr>
-            <td style="width:150px">Number of wheels:</td>
-            <td style="width:250px">@Html.DisplayFor(model => Model.NumberOfWheels)</td>
+            <td class="keys">Check in at:</td>
+            <td class="values">@Html.DisplayFor(model => Model.TimeStampCheckIn)</td>
         </tr>
         <tr>
-            <td style="width:150px">Check in at:</td>
-            <td style="width:250px">@Html.DisplayFor(model => Model.TimeStampCheckIn)</td>
-        </tr>
-        <tr>
-            <td style="width:150px">Check out at:</td>
-            <td style="width:250px">@Html.DisplayFor(model => Model.TimeStampCheckOut)</td>
+            <td class="keys">Check out at:</td>
+            <td class="values">@Html.DisplayFor(model => Model.TimeStampCheckOut)</td>
         </tr>
 
         <tr>
-            <td style="width:150px">Total to pay:</td>
-            <td style="width:250px"><h5>@Html.DisplayFor(model => Model.Cash) kr</h5></td>
-        </tr>
-        <tr>
-            <td>---</td>
-            <td></td>
+            <td class="keys">Total to pay:</td>
+            <td class="values Dprint">@Html.DisplayFor(model => Model.Cash) kr</td>
         </tr>
     </table>
-
+    <p>---</p>
 </div>
 <div>
-    <input type="button" onclick="window.print()" value="Print"  class="btn btn-outline-info"/><a asp-action="Index">Back to List</a>
+    <input type="button" onclick="window.print()" value="Print" class="btn btn-outline-info" /> | <a asp-action="Index">Back to List</a>
 </div>
