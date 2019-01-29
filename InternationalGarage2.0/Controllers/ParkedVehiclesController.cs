@@ -355,7 +355,9 @@ namespace InternationalGarage2_0.Controllers
         private bool IsLicenceNumberCheckedIn(string licenseNumber)
         {
             var parkedVehicle = _context.ParkedVehicle
-                .FirstOrDefault(m => m.LicenseNumber == licenseNumber);
+                .Where(a => a.TimeStampCheckOut == null)
+                .FirstOrDefault(b => b.LicenseNumber == licenseNumber);
+
             if (parkedVehicle != null)
             {
                 return true;
