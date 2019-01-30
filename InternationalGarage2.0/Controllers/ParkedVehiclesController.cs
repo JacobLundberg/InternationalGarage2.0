@@ -131,11 +131,32 @@ namespace InternationalGarage2_0.Controllers
         }
 
         // GET: ParkedVehicles
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortBy)
         {
+            if(sortBy != null)
+            {
+                return View(await GetSortedVehicles(sortBy));
+            }
             //Rewrite this func for checkout operations.
             var context2 = from veh in _context.ParkedVehicle where veh.TimeStampCheckOut == null select veh;
             return View(await context2.ToListAsync());
+        }
+
+        private async Task<List<ParkedVehicle>> GetSortedVehicles(string sortBy)
+        {
+            if(sortBy == "Type") return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Type).ToListAsync();
+
+            if (sortBy == "Color") return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Color).ToListAsync();
+
+            if (sortBy == "TimeStampCheckIn") return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.TimeStampCheckIn).ToListAsync();
+
+            if (sortBy == "NumberOfWheels") return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.NumberOfWheels).ToListAsync();
+
+            if (sortBy == "Model") return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Model).ToListAsync();
+
+            if (sortBy == "LicenseNumber") return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.LicenseNumber).ToListAsync();
+
+            return await _context.ParkedVehicle.ToListAsync();
         }
 
         // GET: ParkedVehicles/Details/5

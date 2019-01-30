@@ -14,22 +14,28 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                <a asp-action="Index" asp-route-sortBy="@Html.DisplayNameFor(model => model.Type)">@Html.DisplayNameFor(model => model.Type)</a>
+                @*@Html.DisplayNameFor(model => model.Type)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LicenseNumber)
+                <a asp-action="Index" asp-route-sortBy="@Html.DisplayNameFor(model => model.LicenseNumber)">@Html.DisplayNameFor(model => model.LicenseNumber)</a>
+                @*@Html.DisplayNameFor(model => model.LicenseNumber)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Color)
+                <a asp-action="Index" asp-route-sortBy="@Html.DisplayNameFor(model => model.Color)">@Html.DisplayNameFor(model => model.Color)</a>
+                @*@Html.DisplayNameFor(model => model.Color)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Model)
+                <a asp-action="Index" asp-route-sortBy="@Html.DisplayNameFor(model => model.Model)">@Html.DisplayNameFor(model => model.Model)</a>
+                @*@Html.DisplayNameFor(model => model.Model)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumberOfWheels)
+                <a asp-action="Index" asp-route-sortBy="@Html.DisplayNameFor(model => model.NumberOfWheels)">@Html.DisplayNameFor(model => model.NumberOfWheels)</a>
+                @*@Html.DisplayNameFor(model => model.NumberOfWheels)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeStampCheckIn)
+                <a asp-action="Index" asp-route-sortBy="TimeStampCheckIn">TimeStampCheckIn</a>
+                @*@Html.DisplayNameFor(model => model.TimeStampCheckIn)*@
             </th>
             <th></th>
         </tr>
