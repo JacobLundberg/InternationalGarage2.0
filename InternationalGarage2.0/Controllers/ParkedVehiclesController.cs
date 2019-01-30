@@ -365,7 +365,8 @@ namespace InternationalGarage2_0.Controllers
 
         public IActionResult Receipt(ParkedVehicle vehout)
         {
-            var timediff = (vehout.TimeStampCheckOut - vehout.TimeStampCheckIn).Value.TotalMinutes;
+            var tin = vehout.TimeStampCheckIn;
+            var tout = vehout.TimeStampCheckOut ?? DateTime.Now;
             Receipt prReceipt = new Receipt
             {
                 LicenseNumber = vehout.LicenseNumber,
@@ -373,9 +374,9 @@ namespace InternationalGarage2_0.Controllers
                 Color = vehout.Color,
                 Model = vehout.Model,
                 NumberOfWheels = vehout.NumberOfWheels,
-                TimeStampCheckIn = vehout.TimeStampCheckIn,
-                TimeStampCheckOut = (DateTime)vehout.TimeStampCheckOut,
-                Cash = (int) timediff
+                TimeStampCheckIn = tin,
+                TimeStampCheckOut = tout,
+                Cash = (int)(tout - tin).TotalMinutes
             };
             return View(prReceipt);
         }
