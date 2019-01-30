@@ -131,6 +131,14 @@ namespace InternationalGarage2_0.Controllers
         }
 
         // GET: ParkedVehicles
+        public async Task<IActionResult> ListGarage()
+        {
+            //Rewrite this func for checkout operations.
+            var context2 = from veh in _context.ParkedVehicle where veh.TimeStampCheckOut == null select veh;
+            return View(await context2.ToListAsync());
+        }
+
+        // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
             //Rewrite this func for checkout operations.
