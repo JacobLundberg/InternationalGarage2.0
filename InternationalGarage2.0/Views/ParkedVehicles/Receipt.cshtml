@@ -1,0 +1,66 @@
+﻿@model InternationalGarage2_0.Models.Receipt
+
+@{
+    ViewData["Title"] = "Receipt";
+}
+
+<div style=" border-left: 6px solid red;background-color: lightgrey;padding-left:5px;">International Garage AB.</div>
+<style>
+    .keys {
+        width:150px;
+        text-align:right;
+        padding-right:5px;
+    }
+    .values{
+        width:250px;
+        padding-left:3px;
+    }
+    .Dprint{
+        font-size:larger;
+        font-weight:bold;
+    }
+</style>
+<div>
+    <p>---</p>
+    <h4>Receipt</h4>
+    <hr />
+    <table style="width:400px">
+        <tr>
+            <td class="keys">Number Plat:</td>
+            <td class="values Dprint">@Html.DisplayFor(model => Model.LicenseNumber)</td>
+        </tr>
+        <tr>
+            <td class="keys">Type:</td>
+            <td class="values">@Html.DisplayFor(model => Model.Type)</td>
+        </tr>
+        <tr>
+            <td class="keys">Color:</td>
+            <td class="values">@Html.DisplayFor(model => Model.Color)</td>
+        </tr>
+        <tr>
+            <td class="keys">Modal:</td>
+            <td class="values">@Html.DisplayFor(model => Model.Model)</td>
+        </tr>
+        <tr>
+            <td class="keys">Number of wheels:</td>
+            <td class="values">@Html.DisplayFor(model => Model.NumberOfWheels)</td>
+        </tr>
+        <tr>
+            <td class="keys">Check in at:</td>
+            <td class="values">@Html.DisplayFor(model => Model.TimeStampCheckIn)</td>
+        </tr>
+        <tr>
+            <td class="keys">Check out at:</td>
+            <td class="values">@Html.DisplayFor(model => Model.TimeStampCheckOut)</td>
+        </tr>
+
+        <tr>
+            <td class="keys">Total to pay:</td>
+            <td class="values Dprint">@Html.DisplayFor(model => Model.Cash) kr</td>
+        </tr>
+    </table>
+    <p>---</p>
+</div>
+<div>
+    <input type="button" onclick="window.print()" value="Print" class="btn btn-outline-info" /> | <a asp-action="Index">Back to List</a>
+</div>

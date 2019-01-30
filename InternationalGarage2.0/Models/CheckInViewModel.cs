@@ -1,30 +1,21 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace InternationalGarage2_0.Models
 {
-
-    public class ParkedVehicle
+    public class CheckInViewModel
     {
-        [Key,Required]
         public int Id { get; set; }
-
+        public List<SelectListItem> Types { get; set; }
         public VehicleType Type { get; set; }
-
-        [RegularExpression(@"^[A-Z]{3}\d{3}$")]
         public string LicenseNumber { get; set; }
         public string Color { get; set; }
         public string Model { get; set; }
         public int NumberOfWheels { get; set; }
-        [Display(Name ="Parked Time")]
-        public DateTime TimeStampCheckIn { get; set; }
-        public DateTime? TimeStampCheckOut { get; set; }
-
-        public ParkedVehicle()
-        {
-        }
+        public string ErrorMessage { get; set; } = string.Empty;
+        public bool ShowErrorMessage => ErrorMessage.Length > 0 ? true: false;
     }
 }

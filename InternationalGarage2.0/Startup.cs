@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using InternationalGarage2._0.Models;
 
-namespace InternationalGarage2._0
+namespace InternationalGarage2_0
 {
     public class Startup
     {
@@ -33,6 +35,9 @@ namespace InternationalGarage2._0
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<InternationalGarage2_0Context>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("InternationalGarage2_0Context")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,13 +56,13 @@ namespace InternationalGarage2._0
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            //app.UseCookiePolicy();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=ParkedVehicles}/{action=Index}/{id?}"); //Reassaign the default route to 'ParkedVehicles'.
             });
         }
     }
