@@ -1,0 +1,72 @@
+﻿@model IEnumerable<InternationalGarage2_0.Models.ParkedVehicle>
+
+@{
+    ViewData["Title"] = "Garage";
+}
+
+<h1>Garage</h1>
+
+<p>
+    <a asp-action="CheckIn">Check In</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.Type)">@Html.DisplayNameFor(model => model.Type)</a>               
+                @*@Html.DisplayNameFor(model => model.Type)*@
+            </th>
+            <th>
+                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.LicenseNumber)">@Html.DisplayNameFor(model => model.LicenseNumber)</a>
+                @*@Html.DisplayNameFor(model => model.LicenseNumber)*@
+            </th>
+            <th>
+                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.Color)">@Html.DisplayNameFor(model => model.Color)</a>
+                @*@Html.DisplayNameFor(model => model.Color)*@
+            </th>
+            <th>
+                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.Model)">@Html.DisplayNameFor(model => model.Model)</a>
+                @*@Html.DisplayNameFor(model => model.Model)*@
+            </th>
+            <th>
+                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.NumberOfWheels)">@Html.DisplayNameFor(model => model.NumberOfWheels)</a>
+                @*@Html.DisplayNameFor(model => model.NumberOfWheels)*@
+            </th>
+            <th>
+                <a asp-action="ListGarage" asp-route-sortBy="TimeStampCheckIn">TimeStampCheckIn</a>
+                @*@Html.DisplayNameFor(model => model.TimeStampCheckIn)*@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LicenseNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Color)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfWheels)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeStampCheckIn)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Check Out</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
