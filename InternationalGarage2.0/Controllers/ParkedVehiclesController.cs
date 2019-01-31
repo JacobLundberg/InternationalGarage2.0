@@ -131,20 +131,59 @@ namespace InternationalGarage2_0.Controllers
         }
 
         // GET: ParkedVehicles
-        public async Task<IActionResult> ListGarage()
+        public async Task<IActionResult> ListGarage(string sortBy)
         {
+            if (sortBy != null)
+            {
+                return View(await GetSortedVehicles(sortBy));
+            }
             //Rewrite this func for checkout operations.
             var context2 = from veh in _context.ParkedVehicle where veh.TimeStampCheckOut == null select veh;
             return View(await context2.ToListAsync());
         }
 
         // GET: ParkedVehicles
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortBy)
         {
+            if (sortBy != null)
+            {
+                return View(await GetSortedVehicles(sortBy));
+            }
             //Rewrite this func for checkout operations.
             var context2 = from veh in _context.ParkedVehicle where veh.TimeStampCheckOut == null select veh;
             return View(await context2.ToListAsync());
         }
+
+        private async Task<List<ParkedVehicle>> GetSortedVehicles(string sortBy)
+        {
+            if (sortBy == "Type")
+            {
+                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Type).ToListAsync();
+            }
+            else if(sortBy == "Color")
+            {
+                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Color).ToListAsync();
+            }
+            else if (sortBy == "TimeStampCheckIn")
+            {
+                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.TimeStampCheckIn).ToListAsync();
+            }
+            else if (sortBy == "NumberOfWheels")
+            {
+                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.NumberOfWheels).ToListAsync();
+            }
+            else if (sortBy == "Model")
+            {
+                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Model).ToListAsync();
+            }
+            else if (sortBy == "LicenseNumber")
+            {
+                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.LicenseNumber).ToListAsync();
+            }
+
+            return await _context.ParkedVehicle.ToListAsync();
+        }
+        
 
         // GET: ParkedVehicles/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -164,27 +203,27 @@ namespace InternationalGarage2_0.Controllers
             return View(parkedVehicle);
         }
 
-        // GET: ParkedVehicles/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //// GET: ParkedVehicles/Create
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        // POST: ParkedVehicles/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels,TimeStampCheckIn,TimeStampCheckOut")] ParkedVehicle parkedVehicle)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(parkedVehicle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(parkedVehicle);
-        }
+        //// POST: ParkedVehicles/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels,TimeStampCheckIn,TimeStampCheckOut")] ParkedVehicle parkedVehicle)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(parkedVehicle);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(parkedVehicle);
+        //}
 
         // GET: ParkedVehicles/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -266,7 +305,7 @@ namespace InternationalGarage2_0.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ListGarage));
             }
             return View(parkedVehicle);
         }
@@ -338,7 +377,7 @@ namespace InternationalGarage2_0.Controllers
                 _context.Add(parkedVehicle);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ListGarage));
             }
             return View(vehicle);
         }
