@@ -143,7 +143,7 @@ namespace InternationalGarage2_0.Controllers
         }
 
         // GET: ParkedVehicles
-        public async Task<IActionResult> Index(string sortBy)
+        public async Task<IActionResult> Index(string sortBy=null)
         {
             if (sortBy != null)
             {
@@ -425,7 +425,7 @@ namespace InternationalGarage2_0.Controllers
                 NumberOfWheels = vehout.NumberOfWheels,
                 TimeStampCheckIn = tin,
                 TimeStampCheckOut = tout,
-                Cash = (int)(tout - tin).TotalMinutes
+                Cash = Math.Round((tout - tin).TotalMinutes)
             };
             return View(prReceipt);
         }
