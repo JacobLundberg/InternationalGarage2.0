@@ -4,14 +4,16 @@ using InternationalGarage2._0.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InternationalGarage2._0.Migrations
 {
     [DbContext(typeof(InternationalGarage2_0Context))]
-    partial class InternationalGarage2_0ContextModelSnapshot : ModelSnapshot
+    [Migration("20190205130956_members")]
+    partial class members
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

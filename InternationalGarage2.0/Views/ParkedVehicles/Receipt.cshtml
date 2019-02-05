@@ -56,7 +56,7 @@
 
         <tr>
             <td class="keys">Total to pay:</td>
-            <td class="values Dprint">@Html.DisplayFor(model => Model.Cash) SEK</td>
+            <td class="values Dprint">@Model.Cash.ToString("C0", System.Globalization.CultureInfo.CreateSpecificCulture("sv-SE"))</td>
         </tr>
     </table>
     <p>------------------------------------------------</p>

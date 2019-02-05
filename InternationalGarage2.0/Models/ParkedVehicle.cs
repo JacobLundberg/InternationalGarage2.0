@@ -15,7 +15,7 @@ namespace InternationalGarage2_0.Models
         public VehicleType Type { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9]*$",ErrorMessage ="Letters and digits only.")]
+        [RegularExpression(@"^[A-Z]{3}[0-9]{3,5}$", ErrorMessage = "Invalid license numbers.")]
         public string LicenseNumber { get; set; }
         public string Color { get; set; }
         public string Model { get; set; }

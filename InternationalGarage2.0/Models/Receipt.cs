@@ -6,14 +6,14 @@ namespace InternationalGarage2_0.Models
     public class Receipt
     {
  
-        public string LicenseNumber;
-        public string Type;
-        public string Color;
-        public string Model;
-        public int NumberOfWheels;
-        public DateTime TimeStampCheckIn;
-        public DateTime TimeStampCheckOut;
+        public string LicenseNumber { get; set; }
+        public string Type { get; set; }
+        public string Color { get; set; }
+        public string Model { get; set; }
+        public int NumberOfWheels { get; set; }
+        public DateTime TimeStampCheckIn { get; set; }
+        public DateTime TimeStampCheckOut { get; set; }
         [DataType(DataType.Currency)]
-        public double Cash;
+        public double Cash { get; set; }
     }
 }
