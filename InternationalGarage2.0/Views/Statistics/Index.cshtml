@@ -1,0 +1,36 @@
+﻿@model InternationalGarage2_0.Models.StatisticsViewModel
+
+@{
+    ViewData["Title"] = "Statistics";
+}
+<h1>Statistics</h1>
+
+<div>
+    <h4>Currently Parked Vehicles, Summary:</h4>
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalNumberOfWheels)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalNumberOfWheels)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalNumberOfParkedVehicles)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalNumberOfParkedVehicles)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CurrentSumParkingFeesDisplay)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CurrentSumParkingFeesDisplay)
+        </dd>
+    </dl>
+</div>
+<div>
+    <div>
+        <a asp-controller="ParkedVehicles" asp-action="ListGarage">Back to List</a>
+    </div>
+</div>

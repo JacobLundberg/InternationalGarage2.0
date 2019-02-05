@@ -13,7 +13,7 @@ namespace InternationalGarage2_0.Models
         public int NumberOfWheels;
         public DateTime TimeStampCheckIn;
         public DateTime TimeStampCheckOut;
-        [DisplayFormat(DataFormatString = "{0:C}")]
-        public int Cash;
+        [DataType(DataType.Currency)]
+        public double Cash;
     }
 }

@@ -26,7 +26,7 @@
     <hr />
     <table style="width:400px">
         <tr>
-            <td class="keys">Number Plat:</td>
+            <td class="keys">License Number:</td>
             <td class="values Dprint">@Html.DisplayFor(model => Model.LicenseNumber)</td>
         </tr>
         <tr>
@@ -38,7 +38,7 @@
             <td class="values">@Html.DisplayFor(model => Model.Color)</td>
         </tr>
         <tr>
-            <td class="keys">Modal:</td>
+            <td class="keys">Model:</td>
             <td class="values">@Html.DisplayFor(model => Model.Model)</td>
         </tr>
         <tr>
@@ -46,21 +46,21 @@
             <td class="values">@Html.DisplayFor(model => Model.NumberOfWheels)</td>
         </tr>
         <tr>
-            <td class="keys">Check in at:</td>
+            <td class="keys">Check in time:</td>
             <td class="values">@Html.DisplayFor(model => Model.TimeStampCheckIn)</td>
         </tr>
         <tr>
-            <td class="keys">Check out at:</td>
+            <td class="keys">Check out time:</td>
             <td class="values">@Html.DisplayFor(model => Model.TimeStampCheckOut)</td>
         </tr>
 
         <tr>
             <td class="keys">Total to pay:</td>
-            <td class="values Dprint">@Html.DisplayFor(model => Model.Cash) kr</td>
+            <td class="values Dprint">@Html.DisplayFor(model => Model.Cash) SEK</td>
         </tr>
     </table>
     <p>------------------------------------------------</p>
 </div>
 <div>
-    <input type="button" onclick="window.print()" value="Print" class="btn btn-outline-info" /> | <a asp-action="Index">Back to List</a>
+    <input type="button" onclick="window.print()" value="Print" class="btn btn-outline-info" /> | <a asp-action="ListGarage">Back to List</a>
 </div>
