@@ -17,6 +17,27 @@ namespace InternationalGarage2_0.Controllers
         public MembersController(InternationalGarage2_0Context context)
         {
             _context = context;
+
+            Seed();
+        }
+
+        /// <summary>
+        /// Add data seed into members table only if it has no data.
+        /// </summary>
+        private void Seed()
+        {
+            if (_context.Member.Count()!=0)
+            {
+                return;
+            }
+            var people = new List<Member>();
+            people.Add(new Member { Name = "Cooper Botsford" });
+            people.Add(new Member { Name = "Kaelyn Christiansen" });
+            people.Add(new Member { Name = "Felipe Pacocha" });
+            people.Add(new Member { Name = "Sherwood Will" });
+            people.Add(new Member { Name = "Carlos Reynolds" });
+            _context.Member.AddRange(people);
+            _context.SaveChanges();
         }
 
         // GET: Members
