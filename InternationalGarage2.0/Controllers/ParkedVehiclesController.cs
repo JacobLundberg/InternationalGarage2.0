@@ -29,7 +29,7 @@ namespace InternationalGarage2_0.Controllers
             _context.ParkedVehicle.Add(
                 new ParkedVehicle()
                 {
-                    Type = VehicleType.Bus,
+                    Type = VehicleType2.Bus,
                     LicenseNumber = "BUZ666",
                     Color = "Red",
                     Model = "MAN",
@@ -40,7 +40,7 @@ namespace InternationalGarage2_0.Controllers
             _context.ParkedVehicle.Add(
                 new ParkedVehicle()
                 {
-                    Type = VehicleType.Car,
+                    Type = VehicleType2.Car,
                     LicenseNumber = "KAR887",
                     Color = "Green",
                     Model = "Volvo",
@@ -51,7 +51,7 @@ namespace InternationalGarage2_0.Controllers
             _context.ParkedVehicle.Add(
                 new ParkedVehicle()
                 {
-                    Type = VehicleType.Car,
+                    Type = VehicleType2.Car,
                     LicenseNumber = "CAB778",
                     Color = "Blue",
                     Model = "Saab",
@@ -62,7 +62,7 @@ namespace InternationalGarage2_0.Controllers
             _context.ParkedVehicle.Add(
                 new ParkedVehicle()
                 {
-                    Type = VehicleType.Motorcycle,
+                    Type = VehicleType2.Motorcycle,
                     LicenseNumber = "MOT554",
                     Color = "Black",
                     Model = "Yamaha",
@@ -73,7 +73,7 @@ namespace InternationalGarage2_0.Controllers
             _context.ParkedVehicle.Add(
                 new ParkedVehicle()
                 {
-                    Type = VehicleType.Motorcycle,
+                    Type = VehicleType2.Motorcycle,
                     LicenseNumber = "TOM554",
                     Color = "Silver",
                     Model = "Honda",
@@ -84,7 +84,7 @@ namespace InternationalGarage2_0.Controllers
             _context.ParkedVehicle.Add(
                 new ParkedVehicle()
                 {
-                    Type = VehicleType.Motorcycle,
+                    Type = VehicleType2.Motorcycle,
                     LicenseNumber = "MCC221",
                     Color = "Red",
                     Model = "Husqvarna",
@@ -95,7 +95,7 @@ namespace InternationalGarage2_0.Controllers
             _context.ParkedVehicle.Add(
                 new ParkedVehicle()
                 {
-                    Type = VehicleType.RV,
+                    Type = VehicleType2.RV,
                     LicenseNumber = "DDS154",
                     Color = "Cream White",
                     Model = "Hymer",
@@ -106,7 +106,7 @@ namespace InternationalGarage2_0.Controllers
             _context.ParkedVehicle.Add(
                 new ParkedVehicle()
                 {
-                    Type = VehicleType.Truck,
+                    Type = VehicleType2.Truck,
                     LicenseNumber = "JLA987",
                     Color = "Silver",
                     Model = "Scania",
@@ -390,7 +390,7 @@ namespace InternationalGarage2_0.Controllers
         private List<SelectListItem> GetTypes()
         {
             var res = new List<SelectListItem>();
-            var values = Enum.GetValues(typeof(VehicleType));
+            var values = Enum.GetValues(typeof(VehicleType2));
             foreach (var item in values)
             {
                 var text = item.ToString();

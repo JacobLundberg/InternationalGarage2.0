@@ -11,7 +11,7 @@ namespace InternationalGarage2_0.Models
     {
         public int Id { get; set; }
         public List<SelectListItem> Types { get; set; }
-        public VehicleType Type { get; set; }
+        public VehicleType2 Type { get; set; }
         [Required]
         [RegularExpression(@"^[a-zA-Z]{3}[0-9]{3,5}$", ErrorMessage = "Invalid license numbers.")]
         public string LicenseNumber { get; set; }

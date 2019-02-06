@@ -12,7 +12,7 @@ namespace InternationalGarage2_0.Models
         [Key,Required]
         public int Id { get; set; }
 
-        public VehicleType Type { get; set; }
+        public VehicleType2 Type { get; set; }
 
         [Required]
         [RegularExpression(@"^[A-Z]{3}[0-9]{3,5}$", ErrorMessage = "Invalid license numbers.")]
