@@ -10,8 +10,13 @@ namespace InternationalGarage2_0.Models
     public class CheckInViewModel
     {
         public int Id { get; set; }
+
+        public int Type { get; set; }
         public List<SelectListItem> Types { get; set; }
-        public VehicleType2 Type { get; set; }
+
+        public int MemberID { get; set; }
+        public List<SelectListItem> Members { get; set; }
+
         [Required]
         [RegularExpression(@"^[a-zA-Z]{3}[0-9]{3,5}$", ErrorMessage = "Invalid license numbers.")]
         public string LicenseNumber { get; set; }
