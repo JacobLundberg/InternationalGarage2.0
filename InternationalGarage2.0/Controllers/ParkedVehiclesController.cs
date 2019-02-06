@@ -191,28 +191,6 @@ namespace InternationalGarage2_0.Controllers
             return View(parkedVehicle);
         }
 
-        //// GET: ParkedVehicles/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: ParkedVehicles/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels,TimeStampCheckIn,TimeStampCheckOut")] ParkedVehicle parkedVehicle)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(parkedVehicle);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(parkedVehicle);
-        //}
-
         // GET: ParkedVehicles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -330,9 +308,13 @@ namespace InternationalGarage2_0.Controllers
         }
 
         // GET: ParkedVehicles/Check In
-        public IActionResult CheckIn()
+        public async Task<IActionResult> CheckIn()
         {
-            var res = new CheckInViewModel() { Types = GetTypes() };
+            var res = new CheckInViewModel()
+            {
+                Types = await GetTypesAsync(),
+                Members = await GetMembersAsync()
+            };
             return View(res);
         }
 
@@ -341,7 +323,7 @@ namespace InternationalGarage2_0.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CheckIn([Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels")] CheckInViewModel vehicle)
+        public async Task<IActionResult> CheckIn([Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels, MemberID")] CheckInViewModel vehicle)
         {
             if (ModelState.IsValid)
             {
@@ -351,9 +333,12 @@ namespace InternationalGarage2_0.Controllers
                     Color = vehicle.Color,
                     LicenseNumber = vehicle.LicenseNumber,
                     Model = vehicle.Model,
-                    Type = vehicle.Type,
+                  
                     NumberOfWheels = vehicle.NumberOfWheels,
-                    TimeStampCheckIn = DateTime.Now
+                    TimeStampCheckIn = DateTime.Now,
+
+                    MemberId = vehicle.MemberID,
+                    VehicleTypeId = vehicle.Type
                 };
 
                 if (IsLicenceNumberCheckedIn(vehicle.LicenseNumber))
@@ -384,6 +369,30 @@ namespace InternationalGarage2_0.Controllers
             {
                 var text = item.ToString();
                 res.Add(new SelectListItem(text, text));
+            }
+            return res;
+        }
+
+        private async Task<List<SelectListItem>> GetTypesAsync()
+        {
+            var vehicleTypes = await _context.VehicleType.ToListAsync();
+            var res = new List<SelectListItem>();
+            foreach (var item in vehicleTypes)
+            {
+                var text = item.Name;
+                res.Add(new SelectListItem(text, item.Id.ToString()));
+            }
+            return res;
+        }
+
+        private async Task<List<SelectListItem>> GetMembersAsync()
+        {
+            var members = await _context.Member.ToListAsync();
+            var res = new List<SelectListItem>();
+            foreach (var item in members)
+            {
+                var text = item.Name;
+                res.Add(new SelectListItem(text, item.Id.ToString()));
             }
             return res;
         }
