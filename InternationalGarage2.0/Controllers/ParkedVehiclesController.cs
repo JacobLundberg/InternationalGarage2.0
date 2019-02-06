@@ -119,57 +119,117 @@ namespace InternationalGarage2_0.Controllers
         }
 
         // GET: ParkedVehicles
-        public async Task<IActionResult> ListGarage(string sortBy)
+        public async Task<IActionResult> ListGarage(string sortBy, string sortAsc = null)
         {
-            if (sortBy != null)
-            {
-                return View(await GetSortedVehicles(sortBy));
-            }
-            //Rewrite this func for checkout operations.
-            var context2 = from veh in _context.ParkedVehicle where veh.TimeStampCheckOut == null select veh;
-            return View(await context2.ToListAsync());
+            return View(await GetSortedVehicles(sortBy, sortAsc));
         }
 
         // GET: ParkedVehicles
-        public async Task<IActionResult> Index(string sortBy = null)
+        public /*async Task<*/IActionResult/*>*/ Index(/*string sortBy = null*/)
         {
-            if (sortBy != null)
-            {
-                return View(await GetSortedVehicles(sortBy));
-            }
-            //Rewrite this func for checkout operations.
-            var context2 = from veh in _context.ParkedVehicle where veh.TimeStampCheckOut == null select veh;
-            return View(await context2.ToListAsync());
+            return View(/*await GetSortedVehicles(sortBy)*/);
         }
 
-        private async Task<List<ParkedVehicle>> GetSortedVehicles(string sortBy)
+        private async Task<List<ParkedVehicle>> GetSortedVehicles(string sortBy, string sortAsc)
         {
-            if (sortBy == "Type")
+            var doSortAsc = false;
+            ViewBag.sortAsc = sortBy;
+            if (!string.IsNullOrEmpty(sortAsc) && sortBy == sortAsc)
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Type).ToListAsync();
+                doSortAsc = true;
+                ViewBag.sortAsc = string.Empty;
+            }
+
+            var vehicleSelection = _context.ParkedVehicle
+                .Include(m => m.Member)
+                .Include(t => t.VehicleType)
+                .Where(v => v.TimeStampCheckOut == null);
+
+            
+            if (sortBy == "Member")
+            {
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.Member.Name);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.Member.Name);
+                }
+            }
+            if (sortBy == "VehicleType")
+            {
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.VehicleType.Name);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.VehicleType.Name);
+                }
+
+                
             }
             else if (sortBy == "Color")
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Color).ToListAsync();
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.Color);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.Color);
+                }
+                
             }
             else if (sortBy == "TimeStampCheckIn")
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.TimeStampCheckIn).ToListAsync();
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.TimeStampCheckIn);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.TimeStampCheckIn);
+                }
             }
             else if (sortBy == "NumberOfWheels")
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.NumberOfWheels).ToListAsync();
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.NumberOfWheels);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.NumberOfWheels);
+                }
+                
             }
             else if (sortBy == "Model")
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Model).ToListAsync();
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.Model);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.Model);
+                }
             }
             else if (sortBy == "LicenseNumber")
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.LicenseNumber).ToListAsync();
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.LicenseNumber);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.LicenseNumber);
+                }
+                
             }
 
-            return await _context.ParkedVehicle.ToListAsync();
+            return await vehicleSelection.ToListAsync();
         }
 
 

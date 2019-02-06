@@ -14,28 +14,25 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.Type)">@Html.DisplayNameFor(model => model.Type)</a>               
-                @*@Html.DisplayNameFor(model => model.Type)*@
+                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.Member)" asp-route-sortAsc="@ViewBag.sortAsc">@Html.DisplayNameFor(model => model.Member.Name)</a>
             </th>
             <th>
-                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.LicenseNumber)">@Html.DisplayNameFor(model => model.LicenseNumber)</a>
-                @*@Html.DisplayNameFor(model => model.LicenseNumber)*@
+                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.VehicleType)" asp-route-sortAsc="@ViewBag.sortAsc">@Html.DisplayNameFor(model => model.VehicleType)</a>
             </th>
             <th>
-                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.Color)">@Html.DisplayNameFor(model => model.Color)</a>
-                @*@Html.DisplayNameFor(model => model.Color)*@
+                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.LicenseNumber)" asp-route-sortAsc="@ViewBag.sortAsc">@Html.DisplayNameFor(model => model.LicenseNumber)</a>
             </th>
             <th>
-                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.Model)">@Html.DisplayNameFor(model => model.Model)</a>
-                @*@Html.DisplayNameFor(model => model.Model)*@
+                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.Color)" asp-route-sortAsc="@ViewBag.sortAsc">@Html.DisplayNameFor(model => model.Color)</a>
             </th>
             <th>
-                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.NumberOfWheels)">@Html.DisplayNameFor(model => model.NumberOfWheels)</a>
-                @*@Html.DisplayNameFor(model => model.NumberOfWheels)*@
+                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.Model)" asp-route-sortAsc="@ViewBag.sortAsc">@Html.DisplayNameFor(model => model.Model)</a>
             </th>
             <th>
-                <a asp-action="ListGarage" asp-route-sortBy="TimeStampCheckIn">TimeStampCheckIn</a>
-                @*@Html.DisplayNameFor(model => model.TimeStampCheckIn)*@
+                <a asp-action="ListGarage" asp-route-sortBy="@Html.DisplayNameFor(model => model.NumberOfWheels)" asp-route-sortAsc="@ViewBag.sortAsc">@Html.DisplayNameFor(model => model.NumberOfWheels)</a>
+            </th>
+            <th>
+                <a asp-action="ListGarage" asp-route-sortBy="TimeStampCheckIn" asp-route-sortAsc="@ViewBag.sortAsc">TimeStampCheckIn</a>
             </th>
             <th></th>
         </tr>
@@ -44,7 +41,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Type)
+                @Html.DisplayFor(modelItem => item.Member.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleType.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LicenseNumber)
