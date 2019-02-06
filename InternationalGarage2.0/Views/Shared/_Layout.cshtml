@@ -36,6 +36,9 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Members" asp-action="Index">Members</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ParkedVehicles" asp-action="ListGarage">List Garage</a>
                         </li>
                         <li class="nav-item">
@@ -45,19 +48,13 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Statistics" asp-action="Index">Statistics</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Members" asp-action="Index">Medlemskap</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="VehicleTypes" asp-action="Index">Vehicle types</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="VehicleTypes" asp-action="Index">Fondonstyp</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <form class="navbar-nav flex-grow-1" asp-area="" asp-controller="ParkedVehicles" asp-action="SearchVehicleLicenseNumber" method="post">
-                                <input class="nav-item form-control" type="text" autofocus name="licenseNumber" required maxlength="20" placeholder="Reg Number.." />
+                            <form class="navbar-nav flex-grow-1" asp-area="" asp-controller="ParkedVehicles" asp-action="Search2_5" method="post">
+                                <input class="nav-item form-control" type="text" autofocus name="searchString" required maxlength="15" placeholder="Search License or Type.." />
                                 &nbsp;
-                                <button class="nav-item btn" type="submit">Search</button>
+                                @*                                <button class="nav-item btn" type="submit">Search</button>*@
                             </form>
                         </li>
                     </ul>

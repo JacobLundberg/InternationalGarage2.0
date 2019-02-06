@@ -118,6 +118,16 @@ namespace InternationalGarage2_0.Controllers
             return View(parkedVehicle);
         }
 
+        public async Task<IActionResult> Search2_5(string searchString)
+        {
+            List<ParkedVehicle> parkedVehicle = _context.ParkedVehicle
+                .Include(m => m.VehicleType)
+                .Where(m => m.LicenseNumber.Contains(searchString) || (m.VehicleType.Name == searchString))
+                .ToList();
+            ViewBag.Search2_5 = searchString;
+            return View(parkedVehicle);
+        }
+
         // GET: ParkedVehicles
         public async Task<IActionResult> ListGarage(string sortBy)
         {
