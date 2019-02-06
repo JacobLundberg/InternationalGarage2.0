@@ -17,5 +17,7 @@ namespace InternationalGarage2._0.Models
         public DbSet<InternationalGarage2_0.Models.ParkedVehicle> ParkedVehicle { get; set; }
 
         public DbSet<InternationalGarage2_0.Models.Member> Member { get; set; }
+
+        public DbSet<InternationalGarage2_0.Models.VehicleType> VehicleType { get; set; }
     }
 }

@@ -10,24 +10,22 @@ using InternationalGarage2_0.Models;
 
 namespace InternationalGarage2_0.Controllers
 {
-    public class MembersController : Controller
+    public class VehicleTypesController : Controller
     {
         private readonly InternationalGarage2_0Context _context;
 
-        public MembersController(InternationalGarage2_0Context context)
+        public VehicleTypesController(InternationalGarage2_0Context context)
         {
             _context = context;
         }
 
-        
-
-        // GET: Members
+        // GET: VehicleTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Member.ToListAsync());
+            return View(await _context.VehicleType.ToListAsync());
         }
 
-        // GET: Members/Details/5
+        // GET: VehicleTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,39 +33,39 @@ namespace InternationalGarage2_0.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member
+            var vehicleType = await _context.VehicleType
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (member == null)
+            if (vehicleType == null)
             {
                 return NotFound();
             }
 
-            return View(member);
+            return View(vehicleType);
         }
 
-        // GET: Members/Create
+        // GET: VehicleTypes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Members/Create
+        // POST: VehicleTypes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MemberName")] Member member)
+        public async Task<IActionResult> Create([Bind("Id,Name")] VehicleType vehicleType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(member);
+                _context.Add(vehicleType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(member);
+            return View(vehicleType);
         }
 
-        // GET: Members/Edit/5
+        // GET: VehicleTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,22 +73,22 @@ namespace InternationalGarage2_0.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member.FindAsync(id);
-            if (member == null)
+            var vehicleType = await _context.VehicleType.FindAsync(id);
+            if (vehicleType == null)
             {
                 return NotFound();
             }
-            return View(member);
+            return View(vehicleType);
         }
 
-        // POST: Members/Edit/5
+        // POST: VehicleTypes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MemberName")] Member member)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] VehicleType vehicleType)
         {
-            if (id != member.Id)
+            if (id != vehicleType.Id)
             {
                 return NotFound();
             }
@@ -99,12 +97,12 @@ namespace InternationalGarage2_0.Controllers
             {
                 try
                 {
-                    _context.Update(member);
+                    _context.Update(vehicleType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MemberExists(member.Id))
+                    if (!VehicleTypeExists(vehicleType.Id))
                     {
                         return NotFound();
                     }
@@ -115,10 +113,10 @@ namespace InternationalGarage2_0.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(member);
+            return View(vehicleType);
         }
 
-        // GET: Members/Delete/5
+        // GET: VehicleTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,30 +124,30 @@ namespace InternationalGarage2_0.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member
+            var vehicleType = await _context.VehicleType
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (member == null)
+            if (vehicleType == null)
             {
                 return NotFound();
             }
 
-            return View(member);
+            return View(vehicleType);
         }
 
-        // POST: Members/Delete/5
+        // POST: VehicleTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var member = await _context.Member.FindAsync(id);
-            _context.Member.Remove(member);
+            var vehicleType = await _context.VehicleType.FindAsync(id);
+            _context.VehicleType.Remove(vehicleType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MemberExists(int id)
+        private bool VehicleTypeExists(int id)
         {
-            return _context.Member.Any(e => e.Id == id);
+            return _context.VehicleType.Any(e => e.Id == id);
         }
     }
 }

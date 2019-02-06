@@ -18,103 +18,91 @@ namespace InternationalGarage2_0.Controllers
         public ParkedVehiclesController(InternationalGarage2_0Context context)
         {
             _context = context;
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" && _context.ParkedVehicle.Count() == 0) Seed();  // If in development & db is empty -> seed some
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                SeedMember();  // If in development & db is empty -> seed some
+                SeedVehicleType();
+                SeedParkedVehice();  // If in development & db is empty -> seed some
+            }
+        }
+
+        /// <summary>
+        /// Add data seed into members table only if it has no data.
+        /// </summary>
+        private void SeedMember()
+        {
+            if (_context.Member.Count() != 0) return;
+
+            var people = new List<Member>();
+            people.Add(new Member { Name = "Cooper Botsford" });
+            people.Add(new Member { Name = "Kaelyn Christiansen" });
+            people.Add(new Member { Name = "Felipe Pacocha" });
+            people.Add(new Member { Name = "Sherwood Will" });
+            people.Add(new Member { Name = "Carlos Reynolds" });
+            _context.Member.AddRange(people);
+            _context.SaveChanges();
+        }
+
+        /// <summary>
+        /// Seed some mockup vehicleTypes into database.
+        /// </summary>
+        private void SeedVehicleType()
+        {
+            if (_context.VehicleType.Count() != 0) return;
+            var vehicles = new List<VehicleType>();
+            vehicles.Add(new VehicleType { Name = "Bus" });
+            vehicles.Add(new VehicleType { Name = "Car" });
+            vehicles.Add(new VehicleType { Name = "Motorcycle" });
+            vehicles.Add(new VehicleType { Name = "RV" });
+            vehicles.Add(new VehicleType { Name = "Truck" });
+            _context.VehicleType.AddRange(vehicles);
+            _context.SaveChanges();
         }
 
         /// <summary>
         /// Seed some mockup vehicles into database.
         /// </summary>
-        protected void Seed()
+        protected void SeedParkedVehice()
         {
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType2.Bus,
-                    LicenseNumber = "BUZ666",
-                    Color = "Red",
-                    Model = "MAN",
-                    NumberOfWheels = 6,
-                    TimeStampCheckIn = new DateTime(2019, 01, 24, 22, 55, 21),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType2.Car,
-                    LicenseNumber = "KAR887",
-                    Color = "Green",
-                    Model = "Volvo",
-                    NumberOfWheels = 4,
-                    TimeStampCheckIn = new DateTime(2019, 01, 25, 19, 25, 11),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType2.Car,
-                    LicenseNumber = "CAB778",
-                    Color = "Blue",
-                    Model = "Saab",
-                    NumberOfWheels = 4,
-                    TimeStampCheckIn = new DateTime(2019, 01, 25, 19, 25, 11),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType2.Motorcycle,
-                    LicenseNumber = "MOT554",
-                    Color = "Black",
-                    Model = "Yamaha",
-                    NumberOfWheels = 2,
-                    TimeStampCheckIn = new DateTime(2019, 01, 26, 12, 44, 07),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType2.Motorcycle,
-                    LicenseNumber = "TOM554",
-                    Color = "Silver",
-                    Model = "Honda",
-                    NumberOfWheels = 2,
-                    TimeStampCheckIn = new DateTime(2019, 01, 20, 12, 22, 07),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType2.Motorcycle,
-                    LicenseNumber = "MCC221",
-                    Color = "Red",
-                    Model = "Husqvarna",
-                    NumberOfWheels = 2,
-                    TimeStampCheckIn = new DateTime(2018, 01, 22, 23, 14, 57),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType2.RV,
-                    LicenseNumber = "DDS154",
-                    Color = "Cream White",
-                    Model = "Hymer",
-                    NumberOfWheels = 6,
-                    TimeStampCheckIn = new DateTime(2019, 01, 24, 08, 03, 44),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType2.Truck,
-                    LicenseNumber = "JLA987",
-                    Color = "Silver",
-                    Model = "Scania",
-                    NumberOfWheels = 18,
-                    TimeStampCheckIn = new DateTime(2019, 01, 22, 11, 24, 57),
-                    TimeStampCheckOut = null
-                });
-            _context.SaveChanges();
+            if (_context.ParkedVehicle.Count() != 0) return;
+            var member = _context.Member.FirstOrDefault();
+            var vehicle = _context.VehicleType.FirstOrDefault();
+            _context.ParkedVehicle.Add(new ParkedVehicle()
+            {
+                Type = VehicleType2.Car,
+                LicenseNumber = "BUZ987",
+                Color = "Red",
+                Model = "MAN",
+                NumberOfWheels = 6,
+                TimeStampCheckIn = new DateTime(2019, 01, 24, 22, 55, 21),
+                TimeStampCheckOut = null,
+                MemberId = member.Id,
+                VehicleTypeId = vehicle.Id,
+            });
+            _context.ParkedVehicle.Add(new ParkedVehicle()
+            {
+                Type = VehicleType2.Bus,
+                LicenseNumber = "BUZ666",
+                Color = "Red",
+                Model = "MAN",
+                NumberOfWheels = 6,
+                TimeStampCheckIn = new DateTime(2019, 01, 24, 22, 55, 21),
+                TimeStampCheckOut = null,
+                MemberId = member.Id,
+                VehicleTypeId = vehicle.Id,
+            });
+            _context.ParkedVehicle.Add(new ParkedVehicle()
+            {
+                Type = VehicleType2.Bus,
+                LicenseNumber = "XXX666",
+                Color = "Grey",
+                Model = "MAN",
+                NumberOfWheels = 6,
+                TimeStampCheckIn = new DateTime(2019, 02, 14, 22, 55, 21),
+                TimeStampCheckOut = null,
+                MemberId = member.Id,
+                VehicleTypeId = vehicle.Id,
+            }); _context.SaveChanges();
         }
 
         public async Task<IActionResult> SearchVehicleLicenseNumber(string licenseNumber)
@@ -143,7 +131,7 @@ namespace InternationalGarage2_0.Controllers
         }
 
         // GET: ParkedVehicles
-        public async Task<IActionResult> Index(string sortBy=null)
+        public async Task<IActionResult> Index(string sortBy = null)
         {
             if (sortBy != null)
             {
@@ -160,7 +148,7 @@ namespace InternationalGarage2_0.Controllers
             {
                 return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Type).ToListAsync();
             }
-            else if(sortBy == "Color")
+            else if (sortBy == "Color")
             {
                 return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Color).ToListAsync();
             }
@@ -183,7 +171,7 @@ namespace InternationalGarage2_0.Controllers
 
             return await _context.ParkedVehicle.ToListAsync();
         }
-        
+
 
         // GET: ParkedVehicles/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -239,7 +227,8 @@ namespace InternationalGarage2_0.Controllers
                 return NotFound();
             }
 
-            var model = new EditViewModel() {
+            var model = new EditViewModel()
+            {
                 Color = parkedVehicle.Color,
                 Id = parkedVehicle.Id,
                 LicenseNumber = parkedVehicle.LicenseNumber,
@@ -248,7 +237,7 @@ namespace InternationalGarage2_0.Controllers
                 Type = parkedVehicle.Type,
                 Types = GetTypes()
             };
-            
+
             return View(model);
         }
 
@@ -270,15 +259,15 @@ namespace InternationalGarage2_0.Controllers
                 {
                     parkedVehicle.Types = GetTypes();
                     var vehicle = _context.ParkedVehicle.FirstOrDefault(a => a.Id == id);
-                    if(vehicle == null)
+                    if (vehicle == null)
                     {
                         parkedVehicle.ErrorMessage = $"Could not find vehicle with id {id}";
                         return View(parkedVehicle);
                     }
 
-                    if(vehicle.LicenseNumber != parkedVehicle.LicenseNumber)
+                    if (vehicle.LicenseNumber != parkedVehicle.LicenseNumber)
                     {
-                        if(IsLicenceNumberCheckedIn(parkedVehicle.LicenseNumber))
+                        if (IsLicenceNumberCheckedIn(parkedVehicle.LicenseNumber))
                         {
                             parkedVehicle.ErrorMessage = GetLicenseAlreadyParkedErrorMsg(parkedVehicle.LicenseNumber);
                             return View(parkedVehicle);
@@ -337,7 +326,7 @@ namespace InternationalGarage2_0.Controllers
             //_context.ParkedVehicle.Remove(parkedVehicle);
             parkedVehicle.TimeStampCheckOut = DateTime.Now;
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Receipt),parkedVehicle);
+            return RedirectToAction(nameof(Receipt), parkedVehicle);
         }
 
         // GET: ParkedVehicles/Check In
