@@ -249,8 +249,9 @@ namespace InternationalGarage2_0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicles = _context.ParkedVehicle.
-                Include(a => a.VehicleType);
+            var parkedVehicles = _context.ParkedVehicle
+                .Include(a => a.VehicleType)
+                .Include(b=> b.Member);
 
             var parkedVehicle = await parkedVehicles
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -367,6 +368,7 @@ namespace InternationalGarage2_0.Controllers
             }
 
             var parkedVehicles = _context.ParkedVehicle
+                .Include(b => b.Member)
                 .Include(a => a.VehicleType);
 
             var parkedVehicle = await parkedVehicles
@@ -500,11 +502,13 @@ namespace InternationalGarage2_0.Controllers
         public async Task<IActionResult> Receipt(ParkedVehicle vehout)
         {
             var vehicleType = await _context.VehicleType.FirstOrDefaultAsync(a => a.Id == vehout.VehicleTypeId);
+            var member = await _context.Member.FirstOrDefaultAsync(a => a.Id == vehout.MemberId);
 
             var tin = vehout.TimeStampCheckIn;
             var tout = vehout.TimeStampCheckOut ?? DateTime.Now;
             Receipt prReceipt = new Receipt
             {
+                MemberName = member.Name,
                 LicenseNumber = vehout.LicenseNumber,
                 Type = vehicleType.Name,//vehout.Type.ToString(),
                 Color = vehout.Color,
