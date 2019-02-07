@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace InternationalGarage2._0.Migrations
+namespace InternationalGarage2_0.Migrations
 {
     public partial class Add_VehicleType_AndChange_ParkedVehicle : Migration
     {

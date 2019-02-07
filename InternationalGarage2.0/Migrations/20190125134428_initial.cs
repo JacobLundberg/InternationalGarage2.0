@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
-namespace InternationalGarage2._0.Migrations
+namespace InternationalGarage2_0.Migrations
 {
     public partial class initial : Migration
     {

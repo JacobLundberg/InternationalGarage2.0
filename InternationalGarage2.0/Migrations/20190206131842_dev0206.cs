@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace InternationalGarage2._0.Migrations
+namespace InternationalGarage2_0.Migrations
 {
     public partial class dev0206 : Migration
     {
