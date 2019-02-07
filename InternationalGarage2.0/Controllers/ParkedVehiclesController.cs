@@ -69,7 +69,7 @@ namespace InternationalGarage2_0.Controllers
             var vehicle = _context.VehicleType.FirstOrDefault();
             _context.ParkedVehicle.Add(new ParkedVehicle()
             {
-                Type = VehicleType2.OldCar,
+                //Type = VehicleType2.OldCar,
                 LicenseNumber = "BUZ987",
                 Color = "Red",
                 Model = "MAN",
@@ -81,7 +81,7 @@ namespace InternationalGarage2_0.Controllers
             });
             _context.ParkedVehicle.Add(new ParkedVehicle()
             {
-                Type = VehicleType2.OldBus,
+                //Type = VehicleType2.OldBus,
                 LicenseNumber = "BUZ666",
                 Color = "Red",
                 Model = "MAN",
@@ -93,7 +93,7 @@ namespace InternationalGarage2_0.Controllers
             });
             _context.ParkedVehicle.Add(new ParkedVehicle()
             {
-                Type = VehicleType2.OldBus,
+                //Type = VehicleType2.OldBus,
                 LicenseNumber = "XXX666",
                 Color = "Grey",
                 Model = "MAN",
@@ -120,10 +120,10 @@ namespace InternationalGarage2_0.Controllers
 
         public async Task<IActionResult> Search2_5(string searchString)
         {
-            List<ParkedVehicle> parkedVehicle = _context.ParkedVehicle
+            List<ParkedVehicle> parkedVehicle = await _context.ParkedVehicle
                 .Include(m => m.VehicleType)
                 .Where(m => m.LicenseNumber.Contains(searchString) || (m.VehicleType.Name == searchString))
-                .ToList();
+                .ToListAsync();
             ViewBag.Search2_5 = searchString;
             return View(parkedVehicle);
         }
@@ -251,7 +251,10 @@ namespace InternationalGarage2_0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await _context.ParkedVehicle
+            var parkedVehicles = _context.ParkedVehicle.
+                Include(a => a.VehicleType);
+
+            var parkedVehicle = await parkedVehicles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (parkedVehicle == null)
             {
@@ -365,8 +368,12 @@ namespace InternationalGarage2_0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await _context.ParkedVehicle
+            var parkedVehicles = _context.ParkedVehicle
+                .Include(a => a.VehicleType);
+
+            var parkedVehicle = await parkedVehicles
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (parkedVehicle == null)
             {
                 return NotFound();
@@ -380,11 +387,13 @@ namespace InternationalGarage2_0.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
+            var parkedVehicles = _context.ParkedVehicle
+                .Include(a => a.VehicleType);
+            var parkedVehicle = await parkedVehicles.FirstOrDefaultAsync(a => a.Id == id);
             //_context.ParkedVehicle.Remove(parkedVehicle);
             parkedVehicle.TimeStampCheckOut = DateTime.Now;
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Receipt), parkedVehicle);
+            return RedirectToAction(nameof(Receipt), parkedVehicle );
         }
 
         // GET: ParkedVehicles/Check In
@@ -423,7 +432,7 @@ namespace InternationalGarage2_0.Controllers
 
                 if (IsLicenceNumberCheckedIn(vehicle.LicenseNumber))
                 {
-                    vehicle.Types = GetTypes();
+                    vehicle.Types = await GetTypesAsync();
                     vehicle.ErrorMessage = GetLicenseAlreadyParkedErrorMsg(vehicle.LicenseNumber);
                     return View(vehicle);
                 }
@@ -441,17 +450,17 @@ namespace InternationalGarage2_0.Controllers
             return _context.ParkedVehicle.Any(e => e.Id == id);
         }
 
-        private List<SelectListItem> GetTypes()
-        {
-            var res = new List<SelectListItem>();
-            var values = Enum.GetValues(typeof(VehicleType2));
-            foreach (var item in values)
-            {
-                var text = item.ToString();
-                res.Add(new SelectListItem(text, text));
-            }
-            return res;
-        }
+        //private List<SelectListItem> GetTypes()
+        //{
+        //    var res = new List<SelectListItem>();
+        //    var values = Enum.GetValues(typeof(VehicleType2));
+        //    foreach (var item in values)
+        //    {
+        //        var text = item.ToString();
+        //        res.Add(new SelectListItem(text, text));
+        //    }
+        //    return res;
+        //}
 
         private async Task<List<SelectListItem>> GetTypesAsync()
         {
@@ -490,14 +499,16 @@ namespace InternationalGarage2_0.Controllers
             return false;
         }
 
-        public IActionResult Receipt(ParkedVehicle vehout)
+        public async Task<IActionResult> Receipt(ParkedVehicle vehout)
         {
+            var vehicleType = await _context.VehicleType.FirstOrDefaultAsync(a => a.Id == vehout.VehicleTypeId);
+
             var tin = vehout.TimeStampCheckIn;
             var tout = vehout.TimeStampCheckOut ?? DateTime.Now;
             Receipt prReceipt = new Receipt
             {
                 LicenseNumber = vehout.LicenseNumber,
-                Type = vehout.Type.ToString(),
+                Type = vehicleType.Name,//vehout.Type.ToString(),
                 Color = vehout.Color,
                 Model = vehout.Model,
                 NumberOfWheels = vehout.NumberOfWheels,
