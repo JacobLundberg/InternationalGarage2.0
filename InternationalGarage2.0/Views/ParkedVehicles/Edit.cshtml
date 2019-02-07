@@ -1,12 +1,10 @@
 ﻿@model InternationalGarage2_0.Models.EditViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Parked Vihicle";
 }
 
-<h1>Edit</h1>
-
-<h4>Parked Vehicle</h4>
+<h1>Edit Parked Vihicle</h1>
 
 @if (Model.ShowErrorMessage)
 {
@@ -52,7 +50,7 @@
 </div>
 
 <div>
-    <a asp-action="ListGarage">Back to List</a>
+    <a class="btn btn-sm btn-primary" asp-action="ListGarage"><i class="fas fa-undo-alt"></i> Back to List Garage</a>
 </div>
 
 @section Scripts {
