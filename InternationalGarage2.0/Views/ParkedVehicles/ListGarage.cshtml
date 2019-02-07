@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<InternationalGarage2_0.Models.ParkedVehicle>
 
 @{
-    ViewData["Title"] = "Garage";
+    ViewData["Title"] = "List Garage";
 }
 
-<h1>Garage</h1>
+<h1>List Garage</h1>
 
 <p>
-    <a asp-action="CheckIn">Check In</a>
+    <a class="btn btn-sm btn-primary" asp-action="CheckIn">Park New Vehicle</a>
 </p>
 
 <table class="table">
@@ -62,9 +62,9 @@
                 @Html.DisplayFor(modelItem => item.TimeStampCheckIn)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Check Out</a>
+                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Check Out</a>
             </td>
         </tr>
 }
