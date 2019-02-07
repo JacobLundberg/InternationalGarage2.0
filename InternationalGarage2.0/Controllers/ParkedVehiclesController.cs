@@ -155,7 +155,7 @@ namespace InternationalGarage2_0.Controllers
                 .Include(t => t.VehicleType)
                 .Where(v => v.TimeStampCheckOut == null);
 
-            
+
             if (sortBy == "Member")
             {
                 if (doSortAsc)
@@ -178,7 +178,7 @@ namespace InternationalGarage2_0.Controllers
                     vehicleSelection = vehicleSelection.OrderByDescending(a => a.VehicleType.Name);
                 }
 
-                
+
             }
             else if (sortBy == "Color")
             {
@@ -190,7 +190,7 @@ namespace InternationalGarage2_0.Controllers
                 {
                     vehicleSelection = vehicleSelection.OrderByDescending(a => a.Color);
                 }
-                
+
             }
             else if (sortBy == "TimeStampCheckIn")
             {
@@ -213,7 +213,7 @@ namespace InternationalGarage2_0.Controllers
                 {
                     vehicleSelection = vehicleSelection.OrderByDescending(a => a.NumberOfWheels);
                 }
-                
+
             }
             else if (sortBy == "Model")
             {
@@ -236,7 +236,7 @@ namespace InternationalGarage2_0.Controllers
                 {
                     vehicleSelection = vehicleSelection.OrderByDescending(a => a.LicenseNumber);
                 }
-                
+
             }
 
             return await vehicleSelection.ToListAsync();
@@ -269,7 +269,12 @@ namespace InternationalGarage2_0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
+            var parkedVehicles = _context.ParkedVehicle
+                .Include(a => a.Member)
+                .Include(b => b.VehicleType);
+
+            var parkedVehicle = await parkedVehicles.FirstOrDefaultAsync(c => c.Id == id);
+
             if (parkedVehicle == null)
             {
                 return NotFound();
@@ -282,8 +287,10 @@ namespace InternationalGarage2_0.Controllers
                 LicenseNumber = parkedVehicle.LicenseNumber,
                 Model = parkedVehicle.Model,
                 NumberOfWheels = parkedVehicle.NumberOfWheels,
-                Type = parkedVehicle.Type,
-                Types = GetTypes()
+                Type = parkedVehicle.VehicleType.Id,
+                Types = await GetTypesAsync(),
+                MemberId = parkedVehicle.MemberId,
+                Members = await GetMembersAsync()
             };
 
             return View(model);
@@ -294,7 +301,7 @@ namespace InternationalGarage2_0.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels")] EditViewModel parkedVehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels, MemberId")] EditViewModel parkedVehicle)
         {
             if (id != parkedVehicle.Id)
             {
@@ -305,7 +312,7 @@ namespace InternationalGarage2_0.Controllers
             {
                 try
                 {
-                    parkedVehicle.Types = GetTypes();
+                    parkedVehicle.Types = await GetTypesAsync();
                     var vehicle = _context.ParkedVehicle.FirstOrDefault(a => a.Id == id);
                     if (vehicle == null)
                     {
@@ -325,7 +332,10 @@ namespace InternationalGarage2_0.Controllers
                     vehicle.LicenseNumber = parkedVehicle.LicenseNumber;
                     vehicle.Model = parkedVehicle.Model;
                     vehicle.NumberOfWheels = parkedVehicle.NumberOfWheels;
-                    vehicle.Type = parkedVehicle.Type;
+
+                    vehicle.VehicleTypeId = parkedVehicle.Type;
+                    vehicle.MemberId = parkedVehicle.MemberId;
+
                     vehicle.Color = parkedVehicle.Color;
 
                     _context.Update(vehicle);
