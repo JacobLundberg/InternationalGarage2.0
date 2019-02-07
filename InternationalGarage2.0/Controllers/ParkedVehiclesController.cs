@@ -1,6 +1,4 @@
-﻿using InternationalGarage2._0.Models;
-using InternationalGarage2_0.Models;
-using Microsoft.AspNetCore.Hosting;
+﻿using InternationalGarage2_0.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
