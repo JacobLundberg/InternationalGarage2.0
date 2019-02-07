@@ -2,10 +2,10 @@
 {
     public enum VehicleType2
     {
-        Bus,
-        Car,
-        Motorcycle,
-        RV,
-        Truck
+        OldBus,
+        OldCar,
+        OldMotorcycle,
+        OldRV,
+        OldTruck
     }
 }
