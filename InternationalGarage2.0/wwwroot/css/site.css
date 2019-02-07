@@ -18,9 +18,17 @@ h1 {
 
 @keyframes headerAnimation {
     0% {
-        text-shadow: 800px 0px 1px grey;
+        text-shadow: -80px -80px 1px #cccccc;
     }
-
+    25% {
+        text-shadow: 800px -20px 2px #bbbbbb;
+    }
+    55% {
+        text-shadow: 600px 40px 3px #b5b5b5;
+    }
+    85% {
+        text-shadow: 50px 20px 4px #a5a5a5;
+    }
     100% {
         text-shadow: 5px 5px 5px #aaaaaa;
     }
