@@ -69,7 +69,7 @@ namespace InternationalGarage2_0.Controllers
             var vehicle = _context.VehicleType.FirstOrDefault();
             _context.ParkedVehicle.Add(new ParkedVehicle()
             {
-                //Type = VehicleType2.OldCar,
+                Type = -1,//VehicleType2.OldCar,
                 LicenseNumber = "BUZ987",
                 Color = "Red",
                 Model = "MAN",
@@ -81,7 +81,7 @@ namespace InternationalGarage2_0.Controllers
             });
             _context.ParkedVehicle.Add(new ParkedVehicle()
             {
-                //Type = VehicleType2.OldBus,
+                Type = -1,//VehicleType2.OldBus,
                 LicenseNumber = "BUZ666",
                 Color = "Red",
                 Model = "MAN",
@@ -93,7 +93,7 @@ namespace InternationalGarage2_0.Controllers
             });
             _context.ParkedVehicle.Add(new ParkedVehicle()
             {
-                //Type = VehicleType2.OldBus,
+                Type = -1,//VehicleType2.OldBus,
                 LicenseNumber = "XXX666",
                 Color = "Grey",
                 Model = "MAN",

@@ -12,7 +12,7 @@ namespace InternationalGarage2_0.Models
         [Key,Required]
         public int Id { get; set; }
 
-        //public VehicleType2 Type { get; set; }
+        public int/*VehicleType2*/ Type { get; set; }
 
         // foreign key 
         public int VehicleTypeId { get; set; }
