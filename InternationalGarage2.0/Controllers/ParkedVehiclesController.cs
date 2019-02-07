@@ -105,18 +105,18 @@ namespace InternationalGarage2_0.Controllers
             }); _context.SaveChanges();
         }
 
-        public async Task<IActionResult> SearchVehicleLicenseNumber(string licenseNumber)
-        {
-            licenseNumber = licenseNumber.ToUpper();
-            var parkedVehicle = await _context.ParkedVehicle
-                .FirstOrDefaultAsync(m => m.LicenseNumber == licenseNumber);
-            if (parkedVehicle == null)
-            {
-                var dummyVehicle = new ParkedVehicle { Id = -1, LicenseNumber = licenseNumber };  // Ugly solution for view to recognize the license was not found!
-                return View(dummyVehicle);
-            }
-            return View(parkedVehicle);
-        }
+        //public async Task<IActionResult> SearchVehicleLicenseNumber(string licenseNumber)
+        //{
+        //    licenseNumber = licenseNumber.ToUpper();
+        //    var parkedVehicle = await _context.ParkedVehicle
+        //        .FirstOrDefaultAsync(m => m.LicenseNumber == licenseNumber);
+        //    if (parkedVehicle == null)
+        //    {
+        //        var dummyVehicle = new ParkedVehicle { Id = -1, LicenseNumber = licenseNumber };  // Ugly solution for view to recognize the license was not found!
+        //        return View(dummyVehicle);
+        //    }
+        //    return View(parkedVehicle);
+        //}
 
         public async Task<IActionResult> Search2_5(string searchString)
         {
