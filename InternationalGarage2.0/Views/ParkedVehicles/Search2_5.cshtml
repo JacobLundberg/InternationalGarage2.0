@@ -17,7 +17,7 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.VehicleType.Name) </th>
+                <th>@Html.DisplayNameFor(model => model.Member.Name) </th>
                 <th>@Html.DisplayNameFor(model => model.LicenseNumber) </th>
                 <th>@Html.DisplayNameFor(model => model.Color) </th>
                 <th>@Html.DisplayNameFor(model => model.Model) </th>
@@ -30,7 +30,7 @@ else
             @foreach (var item in Model)
             {
                 <tr>
-                    <td> @Html.DisplayFor(modelItem => item.VehicleType.Name) </td>
+                    <td> @Html.DisplayFor(modelItem => item.Member.Name) </td>
                     <td> @Html.DisplayFor(modelItem => item.LicenseNumber) </td>
                     <td> @Html.DisplayFor(modelItem => item.Color) </td>
                     <td> @Html.DisplayFor(modelItem => item.Model) </td>
