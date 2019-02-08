@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InternationalGarage2_0.Models
 {
@@ -10,5 +11,7 @@ namespace InternationalGarage2_0.Models
         [RegularExpression(@"^[A-Z][a-zA-Z' ']*$", ErrorMessage = "Invalid name.")]
         [Display(Name ="Member Name:")]
         public string Name { get; set; }
+        [NotMapped]
+        public int NumVehicles { get; set; }
     }
 }
