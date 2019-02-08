@@ -58,9 +58,14 @@
             <td class="values">@Html.DisplayFor(model => Model.TimeStampCheckOut)</td>
         </tr>
 
-        <tr>
+        @*<tr>
             <td class="keys">Total to pay:</td>
             <td class="values Dprint">@Model.Cash.ToString("C0", System.Globalization.CultureInfo.CreateSpecificCulture("sv-SE"))</td>
+        </tr>*@
+
+        <tr>
+            <td class="keys">Total Fee:</td>
+            <td class="values Dprint">@Model.FeeDisplay</td>
         </tr>
     </table>
     <p>------------------------------------------------</p>

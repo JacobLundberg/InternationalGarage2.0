@@ -13,7 +13,10 @@ namespace InternationalGarage2_0.Models
         public int NumberOfWheels { get; set; }
         public DateTime TimeStampCheckIn { get; set; }
         public DateTime TimeStampCheckOut { get; set; }
+        //[DataType(DataType.Currency)]
+        //public double Cash { get; set; }
+
         [DataType(DataType.Currency)]
-        public double Cash { get; set; }
+        public string FeeDisplay { get; set; }
     }
 }

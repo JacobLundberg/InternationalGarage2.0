@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InternationalGarage2_0.BLL;
 
 namespace InternationalGarage2_0.Controllers
 {
@@ -353,18 +354,6 @@ namespace InternationalGarage2_0.Controllers
             return _context.ParkedVehicle.Any(e => e.Id == id);
         }
 
-        //private List<SelectListItem> GetTypes()
-        //{
-        //    var res = new List<SelectListItem>();
-        //    var values = Enum.GetValues(typeof(VehicleType2));
-        //    foreach (var item in values)
-        //    {
-        //        var text = item.ToString();
-        //        res.Add(new SelectListItem(text, text));
-        //    }
-        //    return res;
-        //}
-
         private async Task<List<SelectListItem>> GetTypesAsync()
         {
             var vehicleTypes = await _context.VehicleType.ToListAsync();
@@ -413,13 +402,14 @@ namespace InternationalGarage2_0.Controllers
             {
                 MemberName = member.Name,
                 LicenseNumber = vehout.LicenseNumber,
-                Type = vehicleType.Name,//vehout.Type.ToString(),
+                Type = vehicleType.Name,
                 Color = vehout.Color,
                 Model = vehout.Model,
                 NumberOfWheels = vehout.NumberOfWheels,
                 TimeStampCheckIn = tin,
                 TimeStampCheckOut = tout,
-                Cash = Math.Round((tout - tin).TotalMinutes)
+                //Cash = Math.Round((tout - tin).TotalMinutes),
+                FeeDisplay = ParkingFee.DisplayAsCurrency(tin, tout)
             };
             return View(prReceipt);
         }
