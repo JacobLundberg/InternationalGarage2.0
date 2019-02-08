@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using InternationalGarage2._0.Models;
-using InternationalGarage2_0.Models;
-using Microsoft.AspNetCore.Http;
+﻿using InternationalGarage2_0.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using InternationalGarage2_0.BLL;
 
 namespace InternationalGarage2_0.Controllers
 {
@@ -17,8 +15,8 @@ namespace InternationalGarage2_0.Controllers
         public StatisticsController(InternationalGarage2_0Context context)
         {
             _context = context;
-
         }
+
         // GET: Statistics
         public async Task<IActionResult> Index()
         {
@@ -26,19 +24,20 @@ namespace InternationalGarage2_0.Controllers
             
             var currentParkedVehicles = vehicles.Where(a => a.TimeStampCheckOut == null).ToList();
 
-            double totalCurrentParkedVehicleFees = 0;
+            double totalCurrentParkedVehicleMinutes = 0;
             int totalNumberOfWheels = 0;
             var currentTime = DateTime.Now;
             currentParkedVehicles.ForEach(a => {
                 totalNumberOfWheels += a.NumberOfWheels;
                 var timeSpan = currentTime - a.TimeStampCheckIn;
-                totalCurrentParkedVehicleFees += timeSpan.TotalMinutes;
+                totalCurrentParkedVehicleMinutes += timeSpan.TotalMinutes;
             });
 
             var statisticsModel = new StatisticsViewModel() {
                 TotalNumberOfParkedVehicles = currentParkedVehicles.Count,
                 TotalNumberOfWheels = totalNumberOfWheels,
-                CurrentSumMinutes = totalCurrentParkedVehicleFees,
+                CurrentSumMinutes = totalCurrentParkedVehicleMinutes,
+                CurrentSumParkingFeesDisplay = ParkingFee.DisplayAsCurrency(totalCurrentParkedVehicleMinutes) + $" (Minutes: {Math.Round(totalCurrentParkedVehicleMinutes, 2)}) "
             };
 
             return View(statisticsModel);

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<InternationalGarage2_0.Models.Member>
+
+@{
+    ViewData["Title"] = "List Members";
+}
+
+<h1>List Members</h1>
+
+<p>
+    <a class="btn btn-sm btn-primary" asp-action="Create">Enroll New Member</a>
+    <a class="btn btn-sm btn-primary" asp-action="Search">Search</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>Registered Vehicles</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumVehicles)
+            </td>
+            <td>
+                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

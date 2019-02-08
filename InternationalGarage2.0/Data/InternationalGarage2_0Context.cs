@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using InternationalGarage2_0.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace InternationalGarage2._0.Models
+namespace InternationalGarage2_0.Models
 {
     public class InternationalGarage2_0Context : DbContext
     {
@@ -15,5 +10,9 @@ namespace InternationalGarage2._0.Models
         }
 
         public DbSet<InternationalGarage2_0.Models.ParkedVehicle> ParkedVehicle { get; set; }
+
+        public DbSet<InternationalGarage2_0.Models.Member> Member { get; set; }
+
+        public DbSet<InternationalGarage2_0.Models.VehicleType> VehicleType { get; set; }
     }
 }

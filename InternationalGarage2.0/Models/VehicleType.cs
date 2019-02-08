@@ -1,11 +1,16 @@
-﻿namespace InternationalGarage2_0.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace InternationalGarage2_0.Models
 {
-    public enum VehicleType
+    public class VehicleType
     {
-        Bus,
-        Car,
-        Motorcycle,
-        RV,
-        Truck
+        [Key, Required]
+        public int Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+
+        // navigation collection 
+//        public ICollection<ParkedVehicle> ParkedVehicles { get; set; }
     }
 }

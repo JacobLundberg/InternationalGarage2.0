@@ -8,43 +8,48 @@
 
 <h3>Are you sure you want to check out this vehicle?</h3>
 <div>
-    <h4>Parked Vehicle</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Member)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Member.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VehicleType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VehicleType.Name)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LicenseNumber)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LicenseNumber)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Color)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Color)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Model)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Model)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.NumberOfWheels)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.NumberOfWheels)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TimeStampCheckIn)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TimeStampCheckIn)
         </dd>
         @*<dt class = "col-sm-2">
@@ -57,7 +62,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Check Out" class="btn btn-danger" /> |
-        <a asp-action="ListGarage">Back to List</a>
+        <input type="submit" value="Check Out" class="btn btn-danger" />
+        <a class="btn btn-sm btn-primary" asp-action="ListGarage"><i class="fas fa-undo-alt"></i> Back to List Garage</a>
     </form>
 </div>

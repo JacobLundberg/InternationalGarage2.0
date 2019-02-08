@@ -1,6 +1,4 @@
-﻿using InternationalGarage2._0.Models;
-using InternationalGarage2_0.Models;
-using Microsoft.AspNetCore.Hosting;
+﻿using InternationalGarage2_0.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InternationalGarage2_0.BLL;
 
 namespace InternationalGarage2_0.Controllers
 {
@@ -18,172 +17,133 @@ namespace InternationalGarage2_0.Controllers
         public ParkedVehiclesController(InternationalGarage2_0Context context)
         {
             _context = context;
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" && _context.ParkedVehicle.Count() == 0) Seed();  // If in development & db is empty -> seed some
         }
 
-        /// <summary>
-        /// Seed some mockup vehicles into database.
-        /// </summary>
-        protected void Seed()
+        public async Task<IActionResult> Search2_5(string searchString)
         {
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType.Bus,
-                    LicenseNumber = "BUZ666",
-                    Color = "Red",
-                    Model = "MAN",
-                    NumberOfWheels = 6,
-                    TimeStampCheckIn = new DateTime(2019, 01, 24, 22, 55, 21),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType.Car,
-                    LicenseNumber = "KAR887",
-                    Color = "Green",
-                    Model = "Volvo",
-                    NumberOfWheels = 4,
-                    TimeStampCheckIn = new DateTime(2019, 01, 25, 19, 25, 11),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType.Car,
-                    LicenseNumber = "CAB778",
-                    Color = "Blue",
-                    Model = "Saab",
-                    NumberOfWheels = 4,
-                    TimeStampCheckIn = new DateTime(2019, 01, 25, 19, 25, 11),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType.Motorcycle,
-                    LicenseNumber = "MOT554",
-                    Color = "Black",
-                    Model = "Yamaha",
-                    NumberOfWheels = 2,
-                    TimeStampCheckIn = new DateTime(2019, 01, 26, 12, 44, 07),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType.Motorcycle,
-                    LicenseNumber = "TOM554",
-                    Color = "Silver",
-                    Model = "Honda",
-                    NumberOfWheels = 2,
-                    TimeStampCheckIn = new DateTime(2019, 01, 20, 12, 22, 07),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType.Motorcycle,
-                    LicenseNumber = "MCC221",
-                    Color = "Red",
-                    Model = "Husqvarna",
-                    NumberOfWheels = 2,
-                    TimeStampCheckIn = new DateTime(2018, 01, 22, 23, 14, 57),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType.RV,
-                    LicenseNumber = "DDS154",
-                    Color = "Cream White",
-                    Model = "Hymer",
-                    NumberOfWheels = 6,
-                    TimeStampCheckIn = new DateTime(2019, 01, 24, 08, 03, 44),
-                    TimeStampCheckOut = null
-                });
-            _context.ParkedVehicle.Add(
-                new ParkedVehicle()
-                {
-                    Type = VehicleType.Truck,
-                    LicenseNumber = "JLA987",
-                    Color = "Silver",
-                    Model = "Scania",
-                    NumberOfWheels = 18,
-                    TimeStampCheckIn = new DateTime(2019, 01, 22, 11, 24, 57),
-                    TimeStampCheckOut = null
-                });
-            _context.SaveChanges();
-        }
-
-        public async Task<IActionResult> SearchVehicleLicenseNumber(string licenseNumber)
-        {
-            licenseNumber = licenseNumber.ToUpper();
-            var parkedVehicle = await _context.ParkedVehicle
-                .FirstOrDefaultAsync(m => m.LicenseNumber == licenseNumber);
-            if (parkedVehicle == null)
-            {
-                var dummyVehicle = new ParkedVehicle { Id = -1, LicenseNumber = licenseNumber };  // Ugly solution for view to recognize the license was not found!
-                return View(dummyVehicle);
-            }
+            List<ParkedVehicle> parkedVehicle = await _context.ParkedVehicle
+                .Include(v => v.VehicleType)
+                .Include(m => m.Member)
+                .Where(p => p.LicenseNumber.Contains(searchString) || (p.VehicleType.Name == searchString))
+                .ToListAsync();
+            ViewBag.Search2_5 = searchString;
             return View(parkedVehicle);
         }
 
         // GET: ParkedVehicles
-        public async Task<IActionResult> ListGarage(string sortBy)
+        public async Task<IActionResult> ListGarage(string sortBy, string sortAsc = null)
         {
-            if (sortBy != null)
-            {
-                return View(await GetSortedVehicles(sortBy));
-            }
-            //Rewrite this func for checkout operations.
-            var context2 = from veh in _context.ParkedVehicle where veh.TimeStampCheckOut == null select veh;
-            return View(await context2.ToListAsync());
+            return View(await GetSortedVehicles(sortBy, sortAsc));
         }
 
         // GET: ParkedVehicles
-        public async Task<IActionResult> Index(string sortBy=null)
+        public /*async Task<*/IActionResult/*>*/ Index(/*string sortBy = null*/)
         {
-            if (sortBy != null)
-            {
-                return View(await GetSortedVehicles(sortBy));
-            }
-            //Rewrite this func for checkout operations.
-            var context2 = from veh in _context.ParkedVehicle where veh.TimeStampCheckOut == null select veh;
-            return View(await context2.ToListAsync());
+            return View(/*await GetSortedVehicles(sortBy)*/);
         }
 
-        private async Task<List<ParkedVehicle>> GetSortedVehicles(string sortBy)
+        private async Task<List<ParkedVehicle>> GetSortedVehicles(string sortBy, string sortAsc)
         {
-            if (sortBy == "Type")
+            var doSortAsc = false;
+            ViewBag.sortAsc = sortBy;
+            if (!string.IsNullOrEmpty(sortAsc) && sortBy == sortAsc)
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Type).ToListAsync();
+                doSortAsc = true;
+                ViewBag.sortAsc = string.Empty;
             }
-            else if(sortBy == "Color")
+
+            var vehicleSelection = _context.ParkedVehicle
+                .Include(m => m.Member)
+                .Include(t => t.VehicleType)
+                .Where(v => v.TimeStampCheckOut == null);
+
+
+            if (sortBy == "Member")
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Color).ToListAsync();
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.Member.Name);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.Member.Name);
+                }
+            }
+            if (sortBy == "VehicleType")
+            {
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.VehicleType.Name);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.VehicleType.Name);
+                }
+
+
+            }
+            else if (sortBy == "Color")
+            {
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.Color);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.Color);
+                }
+
             }
             else if (sortBy == "TimeStampCheckIn")
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.TimeStampCheckIn).ToListAsync();
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.TimeStampCheckIn);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.TimeStampCheckIn);
+                }
             }
             else if (sortBy == "NumberOfWheels")
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.NumberOfWheels).ToListAsync();
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.NumberOfWheels);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.NumberOfWheels);
+                }
+
             }
             else if (sortBy == "Model")
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.Model).ToListAsync();
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.Model);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.Model);
+                }
             }
             else if (sortBy == "LicenseNumber")
             {
-                return await _context.ParkedVehicle.Where(a => a.TimeStampCheckOut == null).OrderBy(a => a.LicenseNumber).ToListAsync();
+                if (doSortAsc)
+                {
+                    vehicleSelection = vehicleSelection.OrderBy(a => a.LicenseNumber);
+                }
+                else
+                {
+                    vehicleSelection = vehicleSelection.OrderByDescending(a => a.LicenseNumber);
+                }
+
             }
 
-            return await _context.ParkedVehicle.ToListAsync();
+            return await vehicleSelection.ToListAsync();
         }
-        
+
 
         // GET: ParkedVehicles/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -193,7 +153,11 @@ namespace InternationalGarage2_0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await _context.ParkedVehicle
+            var parkedVehicles = _context.ParkedVehicle
+                .Include(a => a.VehicleType)
+                .Include(b=> b.Member);
+
+            var parkedVehicle = await parkedVehicles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (parkedVehicle == null)
             {
@@ -203,28 +167,6 @@ namespace InternationalGarage2_0.Controllers
             return View(parkedVehicle);
         }
 
-        //// GET: ParkedVehicles/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: ParkedVehicles/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels,TimeStampCheckIn,TimeStampCheckOut")] ParkedVehicle parkedVehicle)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(parkedVehicle);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(parkedVehicle);
-        //}
-
         // GET: ParkedVehicles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -233,22 +175,30 @@ namespace InternationalGarage2_0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
+            var parkedVehicles = _context.ParkedVehicle
+                .Include(a => a.Member)
+                .Include(b => b.VehicleType);
+
+            var parkedVehicle = await parkedVehicles.FirstOrDefaultAsync(c => c.Id == id);
+
             if (parkedVehicle == null)
             {
                 return NotFound();
             }
 
-            var model = new EditViewModel() {
+            var model = new EditViewModel()
+            {
                 Color = parkedVehicle.Color,
                 Id = parkedVehicle.Id,
                 LicenseNumber = parkedVehicle.LicenseNumber,
                 Model = parkedVehicle.Model,
                 NumberOfWheels = parkedVehicle.NumberOfWheels,
-                Type = parkedVehicle.Type,
-                Types = GetTypes()
+                Type = parkedVehicle.VehicleType.Id,
+                Types = await GetTypesAsync(),
+                MemberId = parkedVehicle.MemberId,
+                Members = await GetMembersAsync()
             };
-            
+
             return View(model);
         }
 
@@ -257,7 +207,7 @@ namespace InternationalGarage2_0.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels")] EditViewModel parkedVehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels, MemberId")] EditViewModel parkedVehicle)
         {
             if (id != parkedVehicle.Id)
             {
@@ -268,17 +218,17 @@ namespace InternationalGarage2_0.Controllers
             {
                 try
                 {
-                    parkedVehicle.Types = GetTypes();
+                    parkedVehicle.Types = await GetTypesAsync();
                     var vehicle = _context.ParkedVehicle.FirstOrDefault(a => a.Id == id);
-                    if(vehicle == null)
+                    if (vehicle == null)
                     {
                         parkedVehicle.ErrorMessage = $"Could not find vehicle with id {id}";
                         return View(parkedVehicle);
                     }
 
-                    if(vehicle.LicenseNumber != parkedVehicle.LicenseNumber)
+                    if (vehicle.LicenseNumber != parkedVehicle.LicenseNumber)
                     {
-                        if(IsLicenceNumberCheckedIn(parkedVehicle.LicenseNumber))
+                        if (IsLicenceNumberCheckedIn(parkedVehicle.LicenseNumber))
                         {
                             parkedVehicle.ErrorMessage = GetLicenseAlreadyParkedErrorMsg(parkedVehicle.LicenseNumber);
                             return View(parkedVehicle);
@@ -288,7 +238,10 @@ namespace InternationalGarage2_0.Controllers
                     vehicle.LicenseNumber = parkedVehicle.LicenseNumber;
                     vehicle.Model = parkedVehicle.Model;
                     vehicle.NumberOfWheels = parkedVehicle.NumberOfWheels;
-                    vehicle.Type = parkedVehicle.Type;
+
+                    vehicle.VehicleTypeId = parkedVehicle.Type;
+                    vehicle.MemberId = parkedVehicle.MemberId;
+
                     vehicle.Color = parkedVehicle.Color;
 
                     _context.Update(vehicle);
@@ -318,8 +271,13 @@ namespace InternationalGarage2_0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await _context.ParkedVehicle
+            var parkedVehicles = _context.ParkedVehicle
+                .Include(b => b.Member)
+                .Include(a => a.VehicleType);
+
+            var parkedVehicle = await parkedVehicles
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (parkedVehicle == null)
             {
                 return NotFound();
@@ -333,17 +291,23 @@ namespace InternationalGarage2_0.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
+            var parkedVehicles = _context.ParkedVehicle
+                .Include(a => a.VehicleType);
+            var parkedVehicle = await parkedVehicles.FirstOrDefaultAsync(a => a.Id == id);
             //_context.ParkedVehicle.Remove(parkedVehicle);
             parkedVehicle.TimeStampCheckOut = DateTime.Now;
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Receipt),parkedVehicle);
+            return RedirectToAction(nameof(Receipt), parkedVehicle );
         }
 
         // GET: ParkedVehicles/Check In
-        public IActionResult CheckIn()
+        public async Task<IActionResult> CheckIn()
         {
-            var res = new CheckInViewModel() { Types = GetTypes() };
+            var res = new CheckInViewModel()
+            {
+                Types = await GetTypesAsync(),
+                Members = await GetMembersAsync()
+            };
             return View(res);
         }
 
@@ -352,7 +316,7 @@ namespace InternationalGarage2_0.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CheckIn([Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels")] CheckInViewModel vehicle)
+        public async Task<IActionResult> CheckIn([Bind("Id,Type,LicenseNumber,Color,Model,NumberOfWheels, MemberID")] CheckInViewModel vehicle)
         {
             if (ModelState.IsValid)
             {
@@ -362,14 +326,17 @@ namespace InternationalGarage2_0.Controllers
                     Color = vehicle.Color,
                     LicenseNumber = vehicle.LicenseNumber,
                     Model = vehicle.Model,
-                    Type = vehicle.Type,
+                  
                     NumberOfWheels = vehicle.NumberOfWheels,
-                    TimeStampCheckIn = DateTime.Now
+                    TimeStampCheckIn = DateTime.Now,
+
+                    MemberId = vehicle.MemberID,
+                    VehicleTypeId = vehicle.Type
                 };
 
                 if (IsLicenceNumberCheckedIn(vehicle.LicenseNumber))
                 {
-                    vehicle.Types = GetTypes();
+                    vehicle.Types = await GetTypesAsync();
                     vehicle.ErrorMessage = GetLicenseAlreadyParkedErrorMsg(vehicle.LicenseNumber);
                     return View(vehicle);
                 }
@@ -387,14 +354,26 @@ namespace InternationalGarage2_0.Controllers
             return _context.ParkedVehicle.Any(e => e.Id == id);
         }
 
-        private List<SelectListItem> GetTypes()
+        private async Task<List<SelectListItem>> GetTypesAsync()
         {
+            var vehicleTypes = await _context.VehicleType.ToListAsync();
             var res = new List<SelectListItem>();
-            var values = Enum.GetValues(typeof(VehicleType));
-            foreach (var item in values)
+            foreach (var item in vehicleTypes)
             {
-                var text = item.ToString();
-                res.Add(new SelectListItem(text, text));
+                var text = item.Name;
+                res.Add(new SelectListItem(text, item.Id.ToString()));
+            }
+            return res;
+        }
+
+        private async Task<List<SelectListItem>> GetMembersAsync()
+        {
+            var members = await _context.Member.ToListAsync();
+            var res = new List<SelectListItem>();
+            foreach (var item in members)
+            {
+                var text = item.Name;
+                res.Add(new SelectListItem(text, item.Id.ToString()));
             }
             return res;
         }
@@ -412,20 +391,25 @@ namespace InternationalGarage2_0.Controllers
             return false;
         }
 
-        public IActionResult Receipt(ParkedVehicle vehout)
+        public async Task<IActionResult> Receipt(ParkedVehicle vehout)
         {
+            var vehicleType = await _context.VehicleType.FirstOrDefaultAsync(a => a.Id == vehout.VehicleTypeId);
+            var member = await _context.Member.FirstOrDefaultAsync(a => a.Id == vehout.MemberId);
+
             var tin = vehout.TimeStampCheckIn;
             var tout = vehout.TimeStampCheckOut ?? DateTime.Now;
             Receipt prReceipt = new Receipt
             {
+                MemberName = member.Name,
                 LicenseNumber = vehout.LicenseNumber,
-                Type = vehout.Type.ToString(),
+                Type = vehicleType.Name,
                 Color = vehout.Color,
                 Model = vehout.Model,
                 NumberOfWheels = vehout.NumberOfWheels,
                 TimeStampCheckIn = tin,
                 TimeStampCheckOut = tout,
-                Cash = Math.Round((tout - tin).TotalMinutes)
+                //Cash = Math.Round((tout - tin).TotalMinutes),
+                FeeDisplay = ParkingFee.DisplayAsCurrency(tin, tout)
             };
             return View(prReceipt);
         }

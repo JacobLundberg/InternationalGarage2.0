@@ -26,6 +26,10 @@
     <hr />
     <table style="width:400px">
         <tr>
+            <td class="keys">@Html.DisplayNameFor(model => Model.MemberName)</td>
+            <td class="values Dprint">@Html.DisplayFor(model => Model.MemberName)</td>
+        </tr>
+        <tr>
             <td class="keys">License Number:</td>
             <td class="values Dprint">@Html.DisplayFor(model => Model.LicenseNumber)</td>
         </tr>
@@ -54,13 +58,18 @@
             <td class="values">@Html.DisplayFor(model => Model.TimeStampCheckOut)</td>
         </tr>
 
-        <tr>
+        @*<tr>
             <td class="keys">Total to pay:</td>
-            <td class="values Dprint">@Html.DisplayFor(model => Model.Cash) SEK</td>
+            <td class="values Dprint">@Model.Cash.ToString("C0", System.Globalization.CultureInfo.CreateSpecificCulture("sv-SE"))</td>
+        </tr>*@
+
+        <tr>
+            <td class="keys">Total Fee:</td>
+            <td class="values Dprint">@Model.FeeDisplay</td>
         </tr>
     </table>
     <p>------------------------------------------------</p>
 </div>
 <div>
-    <input type="button" onclick="window.print()" value="Print" class="btn btn-outline-info" /> | <a asp-action="ListGarage">Back to List</a>
+    <input type="button" onclick="window.print()" value="Print" class="btn btn-outline-info" /> <a class="btn btn-sm btn-primary" asp-action="ListGarage"><i class="fas fa-undo-alt"></i> Back to List Garage</a>
 </div>

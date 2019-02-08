@@ -9,8 +9,8 @@ using System;
 namespace InternationalGarage2_0.Migrations
 {
     [DbContext(typeof(InternationalGarage2_0Context))]
-    [Migration("20190125134428_initial")]
-    partial class initial
+    [Migration("20190205130956_members")]
+    partial class members
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,21 @@ namespace InternationalGarage2_0.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("InternationalGarage2_0.Models.Member", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("MemberName")
+                        .IsRequired()
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Member");
+                });
+
             modelBuilder.Entity("InternationalGarage2_0.Models.ParkedVehicle", b =>
                 {
                     b.Property<int>("Id")
@@ -28,7 +43,8 @@ namespace InternationalGarage2_0.Migrations
 
                     b.Property<string>("Color");
 
-                    b.Property<string>("LicenseNumber");
+                    b.Property<string>("LicenseNumber")
+                        .IsRequired();
 
                     b.Property<string>("Model");
 

@@ -1,12 +1,10 @@
 ﻿@model InternationalGarage2_0.Models.EditViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Parked Vehicle";
 }
 
-<h1>Edit</h1>
-
-<h4>Parked Vehicle</h4>
+<h1>Edit Parked Vehicle</h1>
 
 @if (Model.ShowErrorMessage)
 {
@@ -22,6 +20,11 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
+                <label asp-for="Members" class="control-label"></label>
+                <select asp-for="MemberId" asp-items="Model.Members"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Types" class="control-label"></label>
                 <select asp-for="Type" asp-items="Model.Types"></select>
             </div>
             <div class="form-group">
@@ -52,7 +55,7 @@
 </div>
 
 <div>
-    <a asp-action="ListGarage">Back to List</a>
+    <a class="btn btn-sm btn-primary" asp-action="ListGarage"><i class="fas fa-undo-alt"></i> Back to List Garage</a>
 </div>
 
 @section Scripts {

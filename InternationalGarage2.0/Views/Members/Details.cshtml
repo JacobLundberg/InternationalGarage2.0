@@ -1,0 +1,42 @@
+﻿@model InternationalGarage2_0.Models.Member
+
+@{
+    ViewData["Title"] = "Member Details";
+}
+
+<h1>Member Details</h1>
+
+<div>
+    <h4>Member</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <p>------------------------------------------------</p>
+    <h5>Parked vehicles:</h5>
+    <hr />
+    <table>
+        <tr>
+            <td>License Number</td>
+            <td>Park in date</td>
+        </tr>
+        @foreach (var item in Model.MemberVehicle)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.LicenseNumber)</td>
+                <td>@Html.DisplayFor(model => item.TimeStampCheckIn)</td>
+            </tr>
+        }
+    </table>
+</div>
+<div>
+    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <a class="btn btn-sm btn-primary" asp-action="Index"><i class="fas fa-undo-alt"></i> Back to Members List</a>
+</div>

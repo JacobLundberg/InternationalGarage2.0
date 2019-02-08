@@ -1,5 +1,3 @@
-using System;
-
 namespace InternationalGarage2_0.Models
 {
     public class ErrorViewModel

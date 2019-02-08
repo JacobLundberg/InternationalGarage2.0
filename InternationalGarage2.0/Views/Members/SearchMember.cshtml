@@ -1,0 +1,59 @@
+﻿@model InternationalGarage2_0.Models.SearchMember
+
+@{
+    ViewData["Title"] = "SearchMember";
+}
+
+<h1>SearchMember</h1>
+
+<h4>SearchMember</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SearchMember">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NameSearch" class="control-label"></label>
+                <input asp-for="NameSearch" class="form-control" />
+                <span asp-validation-for="NameSearch" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SearchResult.FirstOrDefault().Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.SearchResult)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

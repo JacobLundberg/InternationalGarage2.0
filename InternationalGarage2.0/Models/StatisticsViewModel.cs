@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using InternationalGarage2_0.BLL;
 
 namespace InternationalGarage2_0.Models
 {
@@ -17,15 +15,11 @@ namespace InternationalGarage2_0.Models
         public double CurrentSumMinutes { get; set; }
 
         [Display(Name = "Fees")]
-        public string CurrentSumParkingFeesDisplay => CurrentSumMinutes.ToString("C") + $" (Minutes: {Math.Round(CurrentSumMinutes, 2)}) ";
+        public string CurrentSumParkingFeesDisplay { get; set; }
 
         public StatisticsViewModel()
         {
-            TotalNumberOfWheels = 1;
-
-            TotalNumberOfParkedVehicles = 2;
-
-            CurrentSumMinutes = 3;
+            
         }
     }
 }
