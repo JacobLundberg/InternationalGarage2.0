@@ -16,6 +16,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
+            <th>Registered Vehicles</th>
             <th></th>
         </tr>
     </thead>
@@ -24,6 +25,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumVehicles)
             </td>
             <td>
                 <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
