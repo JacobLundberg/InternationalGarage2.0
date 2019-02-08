@@ -21,8 +21,9 @@ namespace InternationalGarage2_0.Controllers
         public async Task<IActionResult> Search2_5(string searchString)
         {
             List<ParkedVehicle> parkedVehicle = await _context.ParkedVehicle
-                .Include(m => m.VehicleType)
-                .Where(m => m.LicenseNumber.Contains(searchString) || (m.VehicleType.Name == searchString))
+                .Include(v => v.VehicleType)
+                .Include(m => m.Member)
+                .Where(p => p.LicenseNumber.Contains(searchString) || (p.VehicleType.Name == searchString))
                 .ToListAsync();
             ViewBag.Search2_5 = searchString;
             return View(parkedVehicle);
