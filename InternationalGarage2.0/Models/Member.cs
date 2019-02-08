@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InternationalGarage2_0.Models
@@ -13,5 +14,8 @@ namespace InternationalGarage2_0.Models
         public string Name { get; set; }
         [NotMapped]
         public int NumVehicles { get; set; }
+
+        [NotMapped]
+        public IList<ParkedVehicle> MemberVehicle { get; set; }
     }
 }

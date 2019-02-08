@@ -30,6 +30,7 @@ namespace InternationalGarage2_0.Controllers
                                             select new MemVehicle() { mID = numGp.Key, mVehicleNum = numGp.Count() };
             IDictionary<int, MemVehicle> vehiclesSearched;
             vehiclesSearched = await numVeh.AsNoTracking().ToDictionaryAsync(x => x.mID, x => x);
+
             foreach (var item in _context.Member)
             {
                 if (vehiclesSearched.ContainsKey(item.Id))
@@ -40,6 +41,10 @@ namespace InternationalGarage2_0.Controllers
                 {
                     item.NumVehicles = 0;
                 }
+                //IQueryable<ParkedVehicle> memberVehicleList = from veli in _context.ParkedVehicle
+                //                                              where veli.MemberId == item.Id select veli;
+                ////item.MemberVehicle = await memberVehicleList.ToListAsync();
+                //item.MemberVehicle = memberVehicleList.ToList();
             }
 
             return View(await _context.Member.ToListAsync());
@@ -88,7 +93,11 @@ namespace InternationalGarage2_0.Controllers
             {
                 return NotFound();
             }
-
+            IQueryable<ParkedVehicle> memberVehicleList = from veli in _context.ParkedVehicle
+                                                          where veli.MemberId == id
+                                                          select veli;
+            //item.MemberVehicle = await memberVehicleList.ToListAsync();
+            member.MemberVehicle = memberVehicleList.ToList();
             return View(member);
         }
 
