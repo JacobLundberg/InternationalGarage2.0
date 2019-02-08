@@ -1,6 +1,7 @@
 ﻿using InternationalGarage2_0.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,16 +11,37 @@ namespace InternationalGarage2_0.Controllers
     {
         private readonly InternationalGarage2_0Context _context;
 
+        private class MemVehicle
+        {
+            public int mID { get; set; }
+            public int mVehicleNum { get; set; }
+        };
+
         public MembersController(InternationalGarage2_0Context context)
         {
             _context = context;
         }
 
-        
-
         // GET: Members
         public async Task<IActionResult> Index()
         {
+            IQueryable<MemVehicle> numVeh = from vh in _context.ParkedVehicle
+                                            group vh by vh.MemberId into numGp
+                                            select new MemVehicle() { mID = numGp.Key, mVehicleNum = numGp.Count() };
+            IDictionary<int, MemVehicle> vehiclesSearched;
+            vehiclesSearched = await numVeh.AsNoTracking().ToDictionaryAsync(x => x.mID, x => x);
+            foreach (var item in _context.Member)
+            {
+                if (vehiclesSearched.ContainsKey(item.Id))
+                {
+                    item.NumVehicles = vehiclesSearched[item.Id].mVehicleNum;
+                }
+                else
+                {
+                    item.NumVehicles = 0;
+                }
+            }
+
             return View(await _context.Member.ToListAsync());
         }
 
