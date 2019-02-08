@@ -31,6 +31,7 @@ namespace InternationalGarage2_0.BLL
 
         public static string DisplayAsCurrency(DateTime checkIn, DateTime checkOut)
         {
+            //  .ToString("C0", System.Globalization.CultureInfo.CreateSpecificCulture("sv-SE")
             var fee = Calculate(checkIn, checkOut);
             return fee.ToString("C0");
         }

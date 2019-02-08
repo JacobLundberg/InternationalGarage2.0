@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InternationalGarage2_0.BLL;
 
 namespace InternationalGarage2_0.Controllers
 {
@@ -407,7 +408,8 @@ namespace InternationalGarage2_0.Controllers
                 NumberOfWheels = vehout.NumberOfWheels,
                 TimeStampCheckIn = tin,
                 TimeStampCheckOut = tout,
-                Cash = Math.Round((tout - tin).TotalMinutes)
+                //Cash = Math.Round((tout - tin).TotalMinutes),
+                FeeDisplay = ParkingFee.DisplayAsCurrency(tin, tout)
             };
             return View(prReceipt);
         }
