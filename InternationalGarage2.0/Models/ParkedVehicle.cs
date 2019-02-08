@@ -28,7 +28,7 @@ namespace InternationalGarage2_0.Models
         public string Model { get; set; }
         public int NumberOfWheels { get; set; }
 
-        [Display(Name ="Parked Time")]
+        [Display(Name="Parked Time")]
         public DateTime TimeStampCheckIn { get; set; }
         public DateTime? TimeStampCheckOut { get; set; }
 
