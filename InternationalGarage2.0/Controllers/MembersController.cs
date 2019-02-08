@@ -1,6 +1,7 @@
 ﻿using InternationalGarage2_0.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,34 @@ namespace InternationalGarage2_0.Controllers
             _context = context;
         }
 
-        
+        // GET: Search
+        public IActionResult Search()
+        {
+            var search = new SearchMember
+            {
+                SearchResult = new List<Member>()
+            };
+            return View("SearchMember", search);
+        }
+
+
+        // POST: Members/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search([Bind("NameSearch")] SearchMember member)
+        {
+            if (ModelState.IsValid)
+            {
+                var searchString = member.NameSearch;
+                var res = _context.Member.Where(a => a.Name.IndexOf(searchString) > -1);
+                member.SearchResult = await res.ToListAsync();
+                return View(nameof(SearchMember), member);
+            }
+            return NotFound();
+            
+        }
 
         // GET: Members
         public async Task<IActionResult> Index()
